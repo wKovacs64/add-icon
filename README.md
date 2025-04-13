@@ -1,4 +1,4 @@
-# add-icon
+# @wkovacs64/add-icon
 
 A command-line tool to download icons from the [Iconify Framework](https://iconify.design/) and
 apply custom transformations.
