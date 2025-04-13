@@ -30,8 +30,8 @@
     "format": "prettier --cache --write .",
     "format:check": "prettier --cache --check .",
     "changeset": "changeset",
-    "version": "changeset version",
-    "release": "npm run build && changeset publish"
+    "changeset:version": "changeset version && npm install --package-lock-only",
+    "changeset:publish": "changeset publish"
   },
   "prettier": "@wkovacs64/prettier-config",
   "engines": {
