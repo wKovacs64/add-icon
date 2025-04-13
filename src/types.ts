@@ -30,6 +30,3 @@ export interface IconifyConfig {
   /** Array of transform functions to apply to icons */
   transforms?: IconTransform[];
 }
-
-// Export a dummy value to ensure the module isn't just a type module
-export const VERSION = '1.0.0';
