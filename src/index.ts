@@ -20,7 +20,7 @@ export { downloadIcon, parseIconReference } from './iconify.js';
 const program = new Command();
 
 program
-  .name('iconify')
+  .name('add-icon')
   .description('Download and transform icons from Iconify')
   .version('1.0.0')
   .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')

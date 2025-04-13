@@ -16,7 +16,7 @@ export const defaultConfig: IconifyConfig = {
  */
 export async function loadConfig(configPath?: string): Promise<IconifyConfig> {
   // Use provided config path or look for default config file
-  const configFile = configPath || path.resolve(process.cwd(), 'iconify.config.js');
+  const configFile = configPath || path.resolve(process.cwd(), 'add-icon.config.js');
 
   try {
     if (fs.existsSync(configFile)) {

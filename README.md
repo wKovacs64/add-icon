@@ -1,4 +1,4 @@
-# Iconify CLI
+# add-icon
 
 A command-line tool to download icons from the [Iconify Framework](https://iconify.design/) and
 apply custom transformations.
@@ -8,13 +8,13 @@ apply custom transformations.
 Add it to your project:
 
 ```bash
-npm install iconify-cli
+npm install @wkovacs64/add-icon
 ```
 
 Or use it directly with npx without installing:
 
 ```bash
-npx iconify-cli heroicons:arrow-up-circle
+npx @wkovacs64/add-icon heroicons:arrow-up-circle
 ```
 
 ## Usage
@@ -24,13 +24,13 @@ npx iconify-cli heroicons:arrow-up-circle
 Download an icon:
 
 ```bash
-npx iconify-cli heroicons:arrow-up-circle
+npx @wkovacs64/add-icon heroicons:arrow-up-circle
 ```
 
 Specify an output directory:
 
 ```bash
-npx iconify-cli heroicons:arrow-up-circle --output-dir ./my-icons
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --output-dir ./my-icons
 ```
 
 ### Transformations
@@ -39,16 +39,16 @@ Apply built-in transformations:
 
 ```bash
 # Remove width and height attributes
-npx iconify-cli heroicons:arrow-up-circle --remove-size
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --remove-size
 
 # Optimize SVG with SVGO
-npx iconify-cli heroicons:arrow-up-circle --optimize
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --optimize
 
 # Minify SVG
-npx iconify-cli heroicons:arrow-up-circle --minify
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --minify
 
 # Apply multiple transformations
-npx iconify-cli heroicons:arrow-up-circle --remove-size --optimize --minify
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --remove-size --optimize --minify
 ```
 
 ### Custom Transformations
@@ -80,7 +80,7 @@ export default function addTitle(args) {
 Create a custom transform file (e.g., `my-transform.ts`):
 
 ```ts
-import type { TransformArgs } from 'iconify-cli';
+import type { TransformArgs } from '@wkovacs64/add-icon';
 
 /**
  * Custom transform to add a title element to SVG
@@ -97,18 +97,18 @@ Then use it with the CLI:
 
 ```bash
 # JavaScript transform
-npx iconify-cli heroicons:arrow-up-circle --transform ./my-transform.js
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --transform ./my-transform.js
 
 # TypeScript transform
-npx iconify-cli heroicons:arrow-up-circle --transform ./my-transform.ts
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --transform ./my-transform.ts
 ```
 
 ## Configuration File
 
-You can create a configuration file (`iconify.config.js`) in your project root:
+You can create a configuration file (`add-icon.config.js`) in your project root:
 
 ```js
-import { transforms } from 'iconify-cli';
+import { transforms } from '@wkovacs64/add-icon';
 
 // Define custom transform
 function addCustomAttribute(args) {
@@ -128,7 +128,7 @@ You can also use iconify-cli as a library in your own projects:
 ### JavaScript
 
 ```js
-import { downloadIcon, transforms } from 'iconify-cli';
+import { downloadIcon, transforms } from '@wkovacs64/add-icon';
 
 // Create custom transform
 function addCustomAttribute(args) {
@@ -151,7 +151,7 @@ downloadCustomIcon();
 ### TypeScript
 
 ```ts
-import { downloadIcon, transforms, type TransformArgs } from 'iconify-cli';
+import { downloadIcon, transforms, type TransformArgs } from '@wkovacs64/add-icon';
 
 // Create custom transform
 const addCustomAttribute = (args: TransformArgs): string => {
