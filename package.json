@@ -26,9 +26,12 @@
     "dev": "tsx src/index.ts",
     "prepare": "npm run build",
     "typecheck": "attw --pack --profile esm-only",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint src",
     "format": "prettier --cache --write .",
-    "format:check": "prettier --cache --check ."
+    "format:check": "prettier --cache --check .",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "prettier": "@wkovacs64/prettier-config",
   "engines": {
@@ -43,6 +46,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.17.4",
+    "@changesets/cli": "2.28.1",
     "@types/node": "22.14.1",
     "@wkovacs64/eslint-config": "7.5.2",
     "@wkovacs64/prettier-config": "4.1.1",
