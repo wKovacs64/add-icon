@@ -5,13 +5,13 @@ apply custom transformations.
 
 ## Installation
 
+Add it to your project:
+
 ```bash
-npm install -g iconify-cli
-# or
-yarn global add iconify-cli
+npm install iconify-cli
 ```
 
-Or you can use it directly with npx:
+Or use it directly with npx without installing:
 
 ```bash
 npx iconify-cli heroicons:arrow-up-circle
@@ -24,13 +24,24 @@ npx iconify-cli heroicons:arrow-up-circle
 Download an icon:
 
 ```bash
-iconify heroicons:arrow-up-circle
+npx iconify-cli heroicons:arrow-up-circle
 ```
 
 Specify an output directory:
 
 ```bash
-iconify heroicons:arrow-up-circle --output-dir ./my-icons
+npx iconify-cli heroicons:arrow-up-circle --output-dir ./my-icons
+```
+
+If you've installed the package in your project, you can also use it with npm scripts in your
+package.json:
+
+```json
+{
+  "scripts": {
+    "download-icon": "iconify-cli heroicons:arrow-up-circle"
+  }
+}
 ```
 
 ### Transformations
@@ -39,16 +50,16 @@ Apply built-in transformations:
 
 ```bash
 # Remove width and height attributes
-iconify heroicons:arrow-up-circle --remove-size
+npx iconify-cli heroicons:arrow-up-circle --remove-size
 
 # Optimize SVG with SVGO
-iconify heroicons:arrow-up-circle --optimize
+npx iconify-cli heroicons:arrow-up-circle --optimize
 
 # Minify SVG
-iconify heroicons:arrow-up-circle --minify
+npx iconify-cli heroicons:arrow-up-circle --minify
 
 # Apply multiple transformations
-iconify heroicons:arrow-up-circle --remove-size --optimize --minify
+npx iconify-cli heroicons:arrow-up-circle --remove-size --optimize --minify
 ```
 
 ### Custom Transformations
@@ -97,10 +108,10 @@ Then use it with the CLI:
 
 ```bash
 # JavaScript transform
-iconify heroicons:arrow-up-circle --transform ./my-transform.js
+npx iconify-cli heroicons:arrow-up-circle --transform ./my-transform.js
 
 # TypeScript transform
-iconify heroicons:arrow-up-circle --transform ./my-transform.ts
+npx iconify-cli heroicons:arrow-up-circle --transform ./my-transform.ts
 ```
 
 ## Configuration File
