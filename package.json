@@ -1,0 +1,52 @@
+{
+  "name": "iconify-cli",
+  "version": "1.0.0",
+  "description": "CLI tool to download and transform icons from Iconify",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "iconify": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "prepare": "npm run build",
+    "typecheck": "attw --pack --profile esm-only",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint src",
+    "format": "prettier --cache --write .",
+    "format:check": "prettier --cache --check ."
+  },
+  "keywords": [
+    "iconify",
+    "icons",
+    "svg",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@iconify/api": "^3.1.1",
+    "@iconify/tools": "^4.1.2",
+    "@iconify/utils": "^2.3.0",
+    "commander": "^13.1.0",
+    "svgo": "^3.3.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.17.4",
+    "@types/node": "22.14.1",
+    "@wkovacs64/eslint-config": "7.5.2",
+    "@wkovacs64/prettier-config": "4.1.1",
+    "eslint": "9.24.0",
+    "prettier": "3.5.3"
+  },
+  "prettier": "@wkovacs64/prettier-config"
+}

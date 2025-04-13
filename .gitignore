@@ -1,0 +1,48 @@
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+
+# Output directories created by the CLI
+/icons/
+/test-icons/
+/test-icons2/
+/test-icons3/
+/example-icons/
+
+# Coverage output
+coverage/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# TypeScript cache
+*.tsbuildinfo
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettier-cache
+
+# Generated JavaScript files (from TypeScript transforms)
+/example-*.js
