@@ -1,5 +1,5 @@
 import { optimize } from 'svgo';
-import type { IconTransform, TransformArgs } from '../types.js';
+import type { IconTransform, TransformArgs } from './types.js';
 
 /**
  * Removes width and height attributes from SVG

@@ -7,7 +7,7 @@ import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
 import type { IconTransform, TransformArgs } from './types.js';
-import * as defaultTransforms from './transforms/index.js';
+import * as defaultTransforms from './transforms.js';
 
 // Re-export types for easy importing by users
 export type { IconTransform, TransformArgs };
