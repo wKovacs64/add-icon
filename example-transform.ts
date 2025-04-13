@@ -1,4 +1,4 @@
-import { TransformArgs } from 'iconify-cli';
+import type { TransformArgs } from 'iconify-cli';
 
 /**
  * Example transform that adds a custom data attribute
