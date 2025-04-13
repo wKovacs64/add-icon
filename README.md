@@ -33,17 +33,6 @@ Specify an output directory:
 npx iconify-cli heroicons:arrow-up-circle --output-dir ./my-icons
 ```
 
-If you've installed the package in your project, you can also use it with npm scripts in your
-package.json:
-
-```json
-{
-  "scripts": {
-    "download-icon": "iconify-cli heroicons:arrow-up-circle"
-  }
-}
-```
-
 ### Transformations
 
 Apply built-in transformations:
