@@ -2,16 +2,22 @@
   "name": "iconify-cli",
   "version": "1.0.0",
   "description": "CLI tool to download and transform icons from Iconify",
+  "keywords": [
+    "iconify",
+    "icons",
+    "svg",
+    "cli",
+    "download"
+  ],
+  "author": "Justin R. Hall <justin.r.hall@gmail.com>",
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
-  "bin": {
-    "iconify": "./dist/index.js"
-  },
-  "engines": {
-    "node": ">=20.19.0"
-  },
   "exports": {
     ".": "./dist/index.js"
+  },
+  "bin": {
+    "iconify": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -19,18 +25,14 @@
     "dev": "tsx src/index.ts",
     "prepare": "npm run build",
     "typecheck": "attw --pack --profile esm-only",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint src",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --cache --write .",
     "format:check": "prettier --cache --check ."
   },
-  "keywords": [
-    "iconify",
-    "icons",
-    "svg",
-    "cli"
-  ],
-  "author": "",
-  "license": "MIT",
+  "prettier": "@wkovacs64/prettier-config",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "dependencies": {
     "@iconify/api": "^3.1.1",
     "@iconify/tools": "^4.1.2",
@@ -47,6 +49,5 @@
     "@wkovacs64/prettier-config": "4.1.1",
     "eslint": "9.24.0",
     "prettier": "3.5.3"
-  },
-  "prettier": "@wkovacs64/prettier-config"
+  }
 }
