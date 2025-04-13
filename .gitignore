@@ -230,15 +230,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Project-specific additions
-/icons/
-/test-icons/
-/test-icons2/
-/test-icons3/
-/example-icons/
-/examples/icons/
-
-# Generated JavaScript files from TypeScript transforms
-/example-*.js
-
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,osx,vscode,node
