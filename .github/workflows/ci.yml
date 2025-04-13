@@ -1,0 +1,146 @@
+name: 🤖 CI
+
+on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  prettier:
+    name: 🅿️ Prettier
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: 📥 Install deps
+        run: npm install
+
+      - name: 💅 Format check
+        run: npm run format:check
+
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: 📥 Install deps
+        run: npm install
+
+      - name: 🔬 Lint
+        run: npm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: 📥 Install deps
+        run: npm install
+
+      - name: 🔎 Type check
+        run: npm run typecheck
+
+  # test:
+  #   name: 🩺 Tests
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+  #   steps:
+  #     - name: ⬇️ Checkout repo
+  #       uses: actions/checkout@v4
+
+  #     - name: ⎔ Setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: npm
+  #         node-version-file: '.nvmrc'
+
+  #     - name: 📥 Install deps
+  #       run: npm install
+
+  #     - name: ⚡ Vitest with coverage
+  #       run: npm run test:coverage
+
+  #     - name: ☂ Codecov
+  #       uses: codecov/codecov-action@v5
+  #       with:
+  #         fail_ci_if_error: true
+
+  build:
+    name: ⚒️ Build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: 📥 Install deps
+        run: npm install
+
+      - name: ⚙️ Build
+        run: npm run build
+
+  release:
+    name: 🚀 Release
+    runs-on: ubuntu-latest
+    needs: [prettier, lint, typecheck, build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: 📥 Install deps
+        run: npm install
+
+      - name: 🦋 Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: npm run changeset:version
+          publish: npm run changeset:publish
+          commit: 'chore: release'
+          title: 'chore: release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
