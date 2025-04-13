@@ -151,8 +151,7 @@ downloadCustomIcon();
 ### TypeScript
 
 ```ts
-import { downloadIcon, transforms } from 'iconify-cli';
-import type { TransformArgs } from 'iconify-cli';
+import { downloadIcon, transforms, type TransformArgs } from 'iconify-cli';
 
 // Create custom transform
 const addCustomAttribute = (args: TransformArgs): string => {
