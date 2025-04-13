@@ -26,7 +26,7 @@
     "dev": "tsx src/index.ts",
     "prepare": "npm run build",
     "typecheck": "attw --pack --profile esm-only",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint src",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --cache --write .",
     "format:check": "prettier --cache --check .",
     "changeset": "changeset",
