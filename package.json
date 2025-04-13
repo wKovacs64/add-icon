@@ -29,20 +29,11 @@
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --cache --write .",
     "format:check": "prettier --cache --check .",
-    "cm": "cz",
-    "semantic-release": "semantic-release"
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "prettier": "@wkovacs64/prettier-config",
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "release": {
-    "branches": [
-      "main"
-    ]
-  },
   "engines": {
     "node": ">=20.19.0"
   },
@@ -55,13 +46,11 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.17.4",
+    "@changesets/cli": "2.28.1",
     "@types/node": "22.14.1",
     "@wkovacs64/eslint-config": "7.5.2",
     "@wkovacs64/prettier-config": "4.1.1",
-    "commitizen": "4.3.1",
-    "cz-conventional-changelog": "3.3.0",
     "eslint": "9.24.0",
-    "prettier": "3.5.3",
-    "semantic-release": "24.2.3"
+    "prettier": "3.5.3"
   }
 }
