@@ -1,5 +1,5 @@
 ---
-'@wkovacs64/add-icon': minor
+'@wkovacs64/add-icon': major
 ---
 
-Initial release of @wkovacs64/add-icon, a CLI tool to download and transform icons from the Iconify Framework.
+Initial release of `@wkovacs64/add-icon`, a CLI tool to download and transform icons from the Iconify Framework.

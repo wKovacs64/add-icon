@@ -1,6 +1,6 @@
 {
   "name": "@wkovacs64/add-icon",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "CLI tool to download and transform icons from Iconify",
   "keywords": [
     "iconify",
