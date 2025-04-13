@@ -88,7 +88,7 @@ import type { TransformArgs } from '@wkovacs64/add-icon';
  * @returns The transformed SVG
  */
 export default function addTitle(args: TransformArgs): string {
-  const titleElement = `<title>${args.iconName}</title>`;
+  const titleElement = `<title>${args.iconSet}:${args.iconName}</title>`;
   return args.svg.replace(/<svg([^>]*)>/, `<svg$1>${titleElement}`);
 }
 ```
@@ -132,7 +132,7 @@ import { downloadIcon, transforms } from '@wkovacs64/add-icon';
 
 // Create custom transform
 function addCustomAttribute(args) {
-  return args.svg.replace(/<svg/, `<svg data-custom="${args.prefix}"`);
+  return args.svg.replace(/<svg/, `<svg data-custom="${args.iconSet}"`);
 }
 
 // Download an icon with transforms
@@ -155,7 +155,7 @@ import { downloadIcon, transforms, type TransformArgs } from '@wkovacs64/add-ico
 
 // Create custom transform
 const addCustomAttribute = (args: TransformArgs): string => {
-  return args.svg.replace(/<svg/, `<svg data-custom="${args.prefix}"`);
+  return args.svg.replace(/<svg/, `<svg data-custom="${args.iconSet}"`);
 };
 
 // Download an icon with transforms

@@ -5,14 +5,11 @@ export interface TransformArgs {
   /** The SVG content as a string */
   svg: string;
 
-  /** The full icon name (e.g., 'heroicons:arrow-up-circle') */
+  /** The icon set (e.g., 'heroicons') */
+  iconSet: string;
+
+  /** The icon name (e.g., 'arrow-up-circle') */
   iconName: string;
-
-  /** The icon set prefix (e.g., 'heroicons') */
-  prefix: string;
-
-  /** The specific icon name (e.g., 'arrow-up-circle') */
-  name: string;
 }
 
 /**
