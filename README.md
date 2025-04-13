@@ -121,30 +121,6 @@ export default {
 };
 ```
 
-## TypeScript Configuration
-
-This library uses strict TypeScript settings including:
-
-- `verbatimModuleSyntax: true`: Requires explicit `type` imports for types
-- `isolatedModules: true`: Ensures compatibility with transpilers that process single files
-- `moduleDetection: force`: Treats all files as modules
-
-When working with TypeScript transforms or consuming the library in a TypeScript project, make sure
-to:
-
-1. Use `import type` for type imports:
-
-   ```ts
-   import type { TransformArgs, IconTransform } from 'iconify-cli';
-   ```
-
-2. Export transforms as default exports:
-   ```ts
-   export default function myTransform(args: TransformArgs): string {
-     // transform logic
-   }
-   ```
-
 ## Using as a Library
 
 You can also use iconify-cli as a library in your own projects:
