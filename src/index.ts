@@ -22,9 +22,9 @@ const setupProgram = async (): Promise<Command> => {
   const { name, version, description } = await getPackageInfo();
   
   return program
-    .name(name.split('/').pop() || name) // Extract CLI name from package name
+    .name(name.split('/').pop() || name)
     .description(description)
-    .version(version)
+    .version(version, '-v, --version', 'Output the current version')
     .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')
     .option('-o, --output-dir <dir>', 'Directory to save icon')
     .option('-c, --config <path>', 'Path to config file')
