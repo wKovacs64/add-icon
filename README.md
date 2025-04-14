@@ -63,7 +63,7 @@ export default function addTitle(args) {
 
 #### TypeScript Transform
 
-Create a custom transform file (e.g., `my-transform.ts`):
+Create a custom transform file (e.g., `my-transform.ts`) that will be imported directly:
 
 ```ts
 import type { TransformArgs } from '@wkovacs64/add-icon';
@@ -109,6 +109,8 @@ export default {
 
 ### TypeScript Configuration
 
+You can create a TypeScript configuration file and the tool will import it directly:
+
 ```ts
 import type { IconifyConfig, TransformArgs } from '@wkovacs64/add-icon';
 
@@ -124,6 +126,8 @@ const config = {
 
 export default config;
 ```
+
+> **Note:** TypeScript configuration and transform files are compiled in-memory using esbuild, without creating temporary JavaScript files. This provides a seamless TypeScript experience with no extra build steps.
 
 ## Using as a Library
 

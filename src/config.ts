@@ -1,6 +1,8 @@
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import * as esbuild from 'esbuild';
 import type { IconifyConfig } from './types.js';
 
 /**
@@ -11,91 +13,96 @@ export const defaultConfig: IconifyConfig = {
 };
 
 /**
+ * Imports a TypeScript module by transpiling it in-memory with esbuild
+ * @param filePath - Path to TypeScript file
+ * @returns Module exports
+ */
+async function importTsModuleWithEsbuild(filePath: string): Promise<any> {
+  const absolutePath = path.resolve(filePath);
+  try {
+    // Read the TypeScript file content
+    const tsCode = await fs.readFile(absolutePath, "utf-8");
+
+    // Use esbuild to transform TS to ESM JS
+    const result = await esbuild.transform(tsCode, {
+      loader: "ts", // Specify the loader (ts, tsx, js, jsx)
+      format: "esm", // Output format
+      sourcemap: false, // Disable source maps for data URI
+      sourcefile: absolutePath, // Helps with error messages
+      target: 'esnext',
+    });
+
+    const jsCode = result.code;
+
+    // Create data URI and import
+    const base64Code = Buffer.from(jsCode).toString("base64");
+    const dataUri = `data:text/javascript;base64,${base64Code}`;
+    
+    // Import the transformed code as a module
+    const importOptions = {
+      assert: { type: "javascript" } as any,
+    };
+    
+    const module = await import(dataUri, importOptions);
+    return module;
+  } catch (error) {
+    console.error(`Error importing TS module ${filePath} with esbuild:`, error);
+    throw error;
+  }
+}
+
+/**
  * Loads configuration from file if it exists
  * @param configPath - Path to config file
  * @returns Configuration object
  */
 export async function loadConfig(configPath?: string): Promise<IconifyConfig> {
-  // If a specific config path is provided, use it
-  if (configPath) {
-    return await loadConfigFile(configPath);
-  }
-
-  // Try to find a config file in the current directory, checking both JS and TS
-  const jsConfigPath = path.resolve(process.cwd(), 'add-icon.config.js');
-  const tsConfigPath = path.resolve(process.cwd(), 'add-icon.config.ts');
-
-  // Check for TypeScript config first
-  if (fs.existsSync(tsConfigPath)) {
-    return await loadTSConfigFile(tsConfigPath);
-  }
-
-  // Then check for JavaScript config
-  if (fs.existsSync(jsConfigPath)) {
-    return await loadConfigFile(jsConfigPath);
-  }
-
-  // Fall back to default config
-  return defaultConfig;
-}
-
-/**
- * Loads a JavaScript config file
- * @param configPath - Path to JS config file
- * @returns Configuration object
- */
-async function loadConfigFile(configPath: string): Promise<IconifyConfig> {
   try {
-    // For ESM, we need to use dynamic import with file:// protocol
-    const fileUrl = `file://${configPath}`;
-    const config = await import(fileUrl);
-    return { ...defaultConfig, ...config.default };
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`Error loading config file: ${errorMessage}`);
-    return defaultConfig;
-  }
-}
-
-/**
- * Loads a TypeScript config file
- * @param configPath - Path to TS config file
- * @returns Configuration object
- */
-async function loadTSConfigFile(configPath: string): Promise<IconifyConfig> {
-  try {
-    // Create a message to explain TS usage
-    console.log('Loading TypeScript config file...');
-    
-    // Compile the file first - this approach doesn't rely on runtime transpilation
-    try {
-      // Use the tsx command line tool to compile the TypeScript file
-      const jsPath = configPath.replace(/\.ts$/, '.js');
-      
-      // Execute tsx to transform the TS file to JS
-      const { execSync } = await import('node:child_process');
-      execSync(`npx tsx ${configPath} --out-file ${jsPath}`);
-      
-      // Now we can safely import the compiled JS file
-      const absolutePath = path.resolve(jsPath);
-      const fileUrl = pathToFileURL(absolutePath).toString();
-      
-      // Import the compiled JS
-      const config = await import(fileUrl);
-      
-      // Clean up temporary file
-      fs.unlinkSync(jsPath);
-      
-      return { ...defaultConfig, ...config.default };
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      console.error(`Error compiling TypeScript config: ${errorMessage}`);
-      console.error('Make sure tsx is installed correctly or use a JavaScript (.js) config file.');
-      return defaultConfig;
+    // If a specific config path is provided, use it
+    if (configPath) {
+      // Choose loader based on file extension
+      if (configPath.endsWith('.ts')) {
+        const config = await importTsModuleWithEsbuild(configPath);
+        return { ...defaultConfig, ...config.default };
+      } else {
+        // For JS files, use standard dynamic import
+        const fileUrl = pathToFileURL(path.resolve(configPath)).toString();
+        const config = await import(fileUrl);
+        return { ...defaultConfig, ...config.default };
+      }
     }
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`Error loading TypeScript config file: ${errorMessage}`);
+
+    // Try to find a config file in the current directory, checking both JS and TS
+    const jsConfigPath = path.resolve(process.cwd(), 'add-icon.config.js');
+    const tsConfigPath = path.resolve(process.cwd(), 'add-icon.config.ts');
+
+    // Check for TypeScript config first
+    if (existsSync(tsConfigPath)) {
+      try {
+        const config = await importTsModuleWithEsbuild(tsConfigPath);
+        return { ...defaultConfig, ...config.default };
+      } catch (err) {
+        console.error('Error loading TypeScript config, falling back to default config:', err);
+        return defaultConfig;
+      }
+    }
+
+    // Then check for JavaScript config
+    if (existsSync(jsConfigPath)) {
+      try {
+        const fileUrl = pathToFileURL(path.resolve(jsConfigPath)).toString();
+        const config = await import(fileUrl);
+        return { ...defaultConfig, ...config.default };
+      } catch (err) {
+        console.error('Error loading JavaScript config, falling back to default config:', err);
+        return defaultConfig;
+      }
+    }
+
+    // Fall back to default config
+    return defaultConfig;
+  } catch (error) {
+    console.error('Error loading config, using default config:', error);
     return defaultConfig;
   }
 }

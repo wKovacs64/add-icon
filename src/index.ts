@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs';
+import { existsSync } from 'node:fs';
+import fs from 'node:fs/promises';
 import path from 'node:path';
 import url from 'node:url';
 import os from 'node:os';
 import { pathToFileURL } from 'node:url';
-import { execSync } from 'node:child_process';
+import * as esbuild from 'esbuild';
 import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
@@ -15,6 +16,45 @@ import type { IconTransform, TransformArgs } from './types.js';
 export type { IconTransform, TransformArgs };
 // Re-export other useful functions
 export { downloadIcon, parseIconReference } from './iconify.js';
+
+/**
+ * Imports a TypeScript module by transpiling it in-memory with esbuild
+ * @param filePath - Path to TypeScript file
+ * @returns Module exports
+ */
+async function importTsModuleWithEsbuild(filePath: string): Promise<any> {
+  const absolutePath = path.resolve(filePath);
+  try {
+    // Read the TypeScript file content
+    const tsCode = await fs.readFile(absolutePath, "utf-8");
+
+    // Use esbuild to transform TS to ESM JS
+    const result = await esbuild.transform(tsCode, {
+      loader: "ts", // Specify the loader (ts, tsx, js, jsx)
+      format: "esm", // Output format
+      sourcemap: false, // Disable source maps for data URI
+      sourcefile: absolutePath, // Helps with error messages
+      target: 'esnext',
+    });
+
+    const jsCode = result.code;
+
+    // Create data URI and import
+    const base64Code = Buffer.from(jsCode).toString("base64");
+    const dataUri = `data:text/javascript;base64,${base64Code}`;
+    
+    // Import the transformed code as a module
+    const importOptions = {
+      assert: { type: "javascript" } as any,
+    };
+    
+    const module = await import(dataUri, importOptions);
+    return module;
+  } catch (error) {
+    console.error(`Error importing TS module ${filePath} with esbuild:`, error);
+    throw error;
+  }
+}
 
 // Create CLI program
 const program = new Command();
@@ -45,33 +85,16 @@ program
 
           if (transformPath.endsWith('.ts')) {
             try {
-              console.log('Loading TypeScript transform file...');
-              
-              // Compile the TS file to JS first
-              const jsPath = transformPath.replace(/\.ts$/, '.js');
-              
-              // Use tsx to compile the TypeScript file
-              execSync(`npx tsx ${transformPath} --out-file ${jsPath}`);
-              
-              // Import the compiled JS file
-              const absolutePath = path.resolve(jsPath);
-              const fileUrl = pathToFileURL(absolutePath).toString();
-              
-              // Import the transform
-              customTransform = await import(fileUrl);
-              
-              // Clean up temporary file
-              fs.unlinkSync(jsPath);
+              // For TypeScript files, use in-memory transpilation with esbuild
+              customTransform = await importTsModuleWithEsbuild(transformPath);
             } catch (err: unknown) {
               const errorMessage = err instanceof Error ? err.message : String(err);
               console.error(`Error loading TypeScript transform: ${errorMessage}`);
-              console.error('Make sure tsx is installed correctly or use a JavaScript (.js) transform file.');
               process.exit(1);
             }
           } else {
-            // For JavaScript files, use normal import
-            const absolutePath = path.resolve(transformPath);
-            const fileUrl = pathToFileURL(absolutePath).toString();
+            // For JavaScript files, use standard dynamic import
+            const fileUrl = pathToFileURL(path.resolve(transformPath)).toString();
             customTransform = await import(fileUrl);
           }
 
