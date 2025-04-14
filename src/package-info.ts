@@ -25,18 +25,18 @@ export async function getPackageInfo(): Promise<{
     const packageJson = JSON.parse(packageJsonContent);
     
     return {
-      name: packageJson.name || 'add-icon',
+      name: packageJson.name || 'unknown',
       version: packageJson.version || '0.0.0',
-      description: packageJson.description || 'Download and transform icons from Iconify',
+      description: packageJson.description || 'unknown',
     };
   } catch (error) {
     console.warn('Failed to read package.json:', error);
     
     // Fallback values
     return {
-      name: 'add-icon',
+      name: 'unknown',
       version: '0.0.0',
-      description: 'Download and transform icons from Iconify',
+      description: 'unknown',
     };
   }
 }
