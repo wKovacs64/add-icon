@@ -22,7 +22,7 @@ const setupProgram = async (): Promise<Command> => {
   const { name, version, description } = await getPackageInfo();
   
   return program
-    .name(name === 'unknown' ? 'add-icon' : name.split('/').pop() || 'add-icon') // Extract CLI name from package name
+    .name(name.split('/').pop() || name) // Extract CLI name from package name
     .description(description)
     .version(version)
     .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')
