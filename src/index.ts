@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 import os from 'node:os';
+import { pathToFileURL } from 'node:url';
 import { execSync } from 'node:child_process';
 import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
@@ -42,35 +43,36 @@ program
           const transformPath = path.resolve(process.cwd(), options.transform);
           let customTransform;
 
-          // Handle TypeScript files
           if (transformPath.endsWith('.ts')) {
-            // Create a temporary JS file for the transform
-            const jsPath = transformPath.replace(/\.ts$/, '.js');
-
             try {
-              // Use tsc to compile the TypeScript file
-              execSync(
-                `npx tsc "${transformPath}" --outDir "${path.dirname(transformPath)}" --target es2020 --module NodeNext --moduleResolution NodeNext --esModuleInterop`,
-              );
-
+              console.log('Loading TypeScript transform file...');
+              
+              // Compile the TS file to JS first
+              const jsPath = transformPath.replace(/\.ts$/, '.js');
+              
+              // Use tsx to compile the TypeScript file
+              execSync(`npx tsx ${transformPath} --out-file ${jsPath}`);
+              
               // Import the compiled JS file
-              customTransform = await import(`file://${jsPath}`);
-
-              // Clean up temporary JS file if not in dev mode
-              if (process.env.NODE_ENV !== 'development') {
-                fs.unlinkSync(jsPath);
-              }
+              const absolutePath = path.resolve(jsPath);
+              const fileUrl = pathToFileURL(absolutePath).toString();
+              
+              // Import the transform
+              customTransform = await import(fileUrl);
+              
+              // Clean up temporary file
+              fs.unlinkSync(jsPath);
             } catch (err: unknown) {
               const errorMessage = err instanceof Error ? err.message : String(err);
-              console.error(`Error transpiling TypeScript transform: ${errorMessage}`);
-              console.error(
-                'Make sure TypeScript is installed or use a JavaScript (.js) transform file.',
-              );
+              console.error(`Error loading TypeScript transform: ${errorMessage}`);
+              console.error('Make sure tsx is installed correctly or use a JavaScript (.js) transform file.');
               process.exit(1);
             }
           } else {
-            // For JavaScript files, use dynamic import
-            customTransform = await import(`file://${transformPath}`);
+            // For JavaScript files, use normal import
+            const absolutePath = path.resolve(transformPath);
+            const fileUrl = pathToFileURL(absolutePath).toString();
+            customTransform = await import(fileUrl);
           }
 
           if (customTransform && typeof customTransform.default === 'function') {

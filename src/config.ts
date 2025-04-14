@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import type { IconifyConfig } from './types.js';
 
 /**
@@ -57,37 +58,39 @@ async function loadConfigFile(configPath: string): Promise<IconifyConfig> {
 }
 
 /**
- * Loads a TypeScript config file by transpiling it first
+ * Loads a TypeScript config file
  * @param configPath - Path to TS config file
  * @returns Configuration object
  */
 async function loadTSConfigFile(configPath: string): Promise<IconifyConfig> {
   try {
-    // Create a temporary JS file for the TypeScript config
-    const jsPath = configPath.replace(/\.ts$/, '.js');
-
+    // Create a message to explain TS usage
+    console.log('Loading TypeScript config file...');
+    
+    // Compile the file first - this approach doesn't rely on runtime transpilation
     try {
-      // Use TypeScript to compile the config file
-      const { execSync } = await import('node:child_process');
+      // Use the tsx command line tool to compile the TypeScript file
+      const jsPath = configPath.replace(/\.ts$/, '.js');
       
-      execSync(
-        `npx tsc "${configPath}" --outDir "${path.dirname(configPath)}" --target es2020 --module NodeNext --moduleResolution NodeNext --esModuleInterop`,
-        { stdio: 'ignore' }
-      );
-
-      // Load the compiled JS config
-      const result = await loadConfigFile(jsPath);
-
-      // Clean up the temporary JS file
-      if (process.env.NODE_ENV !== 'development') {
-        fs.unlinkSync(jsPath);
-      }
-
-      return result;
+      // Execute tsx to transform the TS file to JS
+      const { execSync } = await import('node:child_process');
+      execSync(`npx tsx ${configPath} --out-file ${jsPath}`);
+      
+      // Now we can safely import the compiled JS file
+      const absolutePath = path.resolve(jsPath);
+      const fileUrl = pathToFileURL(absolutePath).toString();
+      
+      // Import the compiled JS
+      const config = await import(fileUrl);
+      
+      // Clean up temporary file
+      fs.unlinkSync(jsPath);
+      
+      return { ...defaultConfig, ...config.default };
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
-      console.error(`Error transpiling TypeScript config: ${errorMessage}`);
-      console.error('Make sure TypeScript is installed or use a JavaScript (.js) config file.');
+      console.error(`Error compiling TypeScript config: ${errorMessage}`);
+      console.error('Make sure tsx is installed correctly or use a JavaScript (.js) config file.');
       return defaultConfig;
     }
   } catch (error: unknown) {
