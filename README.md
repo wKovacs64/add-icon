@@ -35,21 +35,7 @@ npx @wkovacs64/add-icon heroicons:arrow-up-circle --output-dir ./my-icons
 
 ### Transformations
 
-Apply built-in transformations:
-
-```bash
-# Remove width and height attributes
-npx @wkovacs64/add-icon heroicons:arrow-up-circle --remove-size
-
-# Optimize SVG with SVGO
-npx @wkovacs64/add-icon heroicons:arrow-up-circle --optimize
-
-# Minify SVG
-npx @wkovacs64/add-icon heroicons:arrow-up-circle --minify
-
-# Apply multiple transformations
-npx @wkovacs64/add-icon heroicons:arrow-up-circle --remove-size --optimize --minify
-```
+The tool fetches SVG icons directly from the Iconify API with width and height attributes removed automatically. You can add custom transformations for more advanced modifications.
 
 ### Custom Transformations
 
@@ -105,11 +91,11 @@ npx @wkovacs64/add-icon heroicons:arrow-up-circle --transform ./my-transform.ts
 
 ## Configuration File
 
-You can create a configuration file (`add-icon.config.js`) in your project root:
+You can create a configuration file in your project root, using either JavaScript (`add-icon.config.js`) or TypeScript (`add-icon.config.ts`).
+
+### JavaScript Configuration
 
 ```js
-import { transforms } from '@wkovacs64/add-icon';
-
 // Define custom transform
 function addCustomAttribute(args) {
   return args.svg.replace(/<svg/, `<svg data-icon="${args.iconName}"`);
@@ -117,8 +103,26 @@ function addCustomAttribute(args) {
 
 export default {
   outputDir: './assets/icons',
-  transforms: [transforms.removeSize, transforms.optimizeSvg, addCustomAttribute],
+  transforms: [addCustomAttribute],
 };
+```
+
+### TypeScript Configuration
+
+```ts
+import type { IconifyConfig, TransformArgs } from '@wkovacs64/add-icon';
+
+// Define custom transform
+function addCustomAttribute(args: TransformArgs): string {
+  return args.svg.replace(/<svg/, `<svg data-icon="${args.iconName}"`);
+}
+
+const config: IconifyConfig = {
+  outputDir: './assets/icons',
+  transforms: [addCustomAttribute],
+};
+
+export default config;
 ```
 
 ## Using as a Library
@@ -128,7 +132,7 @@ You can also use iconify-cli as a library in your own projects:
 ### JavaScript
 
 ```js
-import { downloadIcon, transforms } from '@wkovacs64/add-icon';
+import { downloadIcon } from '@wkovacs64/add-icon';
 
 // Create custom transform
 function addCustomAttribute(args) {
@@ -139,7 +143,7 @@ function addCustomAttribute(args) {
 async function downloadCustomIcon() {
   const iconPath = await downloadIcon('heroicons:heart', {
     outputDir: './icons',
-    transforms: [transforms.removeSize, transforms.optimizeSvg, addCustomAttribute],
+    transforms: [addCustomAttribute],
   });
 
   console.log(`Icon saved to: ${iconPath}`);
@@ -151,7 +155,7 @@ downloadCustomIcon();
 ### TypeScript
 
 ```ts
-import { downloadIcon, transforms, type TransformArgs } from '@wkovacs64/add-icon';
+import { downloadIcon, type TransformArgs } from '@wkovacs64/add-icon';
 
 // Create custom transform
 const addCustomAttribute = (args: TransformArgs): string => {
@@ -163,7 +167,7 @@ async function downloadCustomIcon(): Promise<void> {
   try {
     const iconPath = await downloadIcon('heroicons:heart', {
       outputDir: './icons',
-      transforms: [transforms.removeSize, transforms.optimizeSvg, addCustomAttribute],
+      transforms: [addCustomAttribute],
     });
 
     console.log(`Icon saved to: ${iconPath}`);
