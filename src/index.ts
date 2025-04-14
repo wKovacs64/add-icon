@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-import { existsSync } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 import os from 'node:os';
-import { pathToFileURL } from 'node:url';
 import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
-import { importTsModule } from './import-ts-module.js';
+import { importModule } from './import-module.js';
 import type { IconTransform, TransformArgs } from './types.js';
 
 // Re-export types for easy importing by users
@@ -42,19 +40,13 @@ program
           const transformPath = path.resolve(process.cwd(), options.transform);
           let customTransform;
 
-          if (transformPath.endsWith('.ts')) {
-            try {
-              // For TypeScript files, use in-memory transpilation with esbuild
-              customTransform = await importTsModule(transformPath);
-            } catch (err: unknown) {
-              const errorMessage = err instanceof Error ? err.message : String(err);
-              console.error(`Error loading TypeScript transform: ${errorMessage}`);
-              process.exit(1);
-            }
-          } else {
-            // For JavaScript files, use standard dynamic import
-            const fileUrl = pathToFileURL(path.resolve(transformPath)).toString();
-            customTransform = await import(fileUrl);
+          try {
+            // Use unified import method for both JS and TS files
+            customTransform = await importModule(transformPath);
+          } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            console.error(`Error loading transform: ${errorMessage}`);
+            process.exit(1);
           }
 
           if (customTransform && typeof customTransform.default === 'function') {
