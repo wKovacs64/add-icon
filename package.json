@@ -18,7 +18,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "add-icon": "./bin/add-icon.js"
+    "add-icon": "bin/add-icon.js"
   },
   "files": [
     "dist",
