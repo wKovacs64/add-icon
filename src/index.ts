@@ -9,12 +9,9 @@ import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
 import type { IconTransform, TransformArgs } from './types.js';
-import * as defaultTransforms from './transforms.js';
 
 // Re-export types for easy importing by users
 export type { IconTransform, TransformArgs };
-// Re-export transforms for easy importing by users
-export { defaultTransforms as transforms };
 // Re-export other useful functions
 export { downloadIcon, parseIconReference } from './iconify.js';
 
@@ -28,9 +25,6 @@ program
   .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')
   .option('-o, --output-dir <dir>', 'Directory to save icon')
   .option('-c, --config <path>', 'Path to config file')
-  .option('--remove-size', 'Remove width and height attributes')
-  .option('--optimize', 'Optimize SVG with SVGO')
-  .option('--minify', 'Minify SVG by removing whitespace')
   .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)')
   .action(async (icon, options) => {
     try {
@@ -40,22 +34,6 @@ program
       // Override output directory if specified in CLI
       if (options.outputDir) {
         config.outputDir = options.outputDir;
-      }
-
-      // Prepare transforms array
-      const transforms: IconTransform[] = [];
-
-      // Add requested built-in transforms
-      if (options.removeSize) {
-        transforms.push(defaultTransforms.removeSize);
-      }
-
-      if (options.optimize) {
-        transforms.push(defaultTransforms.optimizeSvg);
-      }
-
-      if (options.minify) {
-        transforms.push(defaultTransforms.minifySvg);
       }
 
       // Load custom transform if specified
@@ -96,7 +74,7 @@ program
           }
 
           if (customTransform && typeof customTransform.default === 'function') {
-            transforms.push(customTransform.default);
+            config.transforms = [customTransform.default];
           } else {
             console.error('Custom transform must export a default function');
             process.exit(1);
@@ -106,11 +84,6 @@ program
           console.error(`Failed to load custom transform: ${errorMessage}`);
           process.exit(1);
         }
-      }
-
-      // Add transforms to config
-      if (transforms.length > 0) {
-        config.transforms = transforms;
       }
 
       // Download the icon

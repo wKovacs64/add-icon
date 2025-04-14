@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { iconToSVG, type IconifyIcon } from '@iconify/utils';
 import type { IconifyConfig, TransformArgs } from './types.js';
 
 /**
@@ -22,13 +21,14 @@ export function parseIconReference(iconReference: string): { iconSet: string; ic
 }
 
 /**
- * Fetches icon data from Iconify API
+ * Fetches icon SVG directly from Iconify API
  * @param iconSet - Icon set name
  * @param iconName - Icon name
- * @returns Promise with icon data
+ * @returns Promise with SVG string
  */
-async function fetchIconData(iconSet: string, iconName: string): Promise<IconifyIcon> {
-  const apiUrl = `https://api.iconify.design/${iconSet}.json?icons=${iconName}`;
+async function fetchIconSvg(iconSet: string, iconName: string): Promise<string> {
+  // Using width=unset parameter to remove width/height attributes automatically
+  const apiUrl = `https://api.iconify.design/${iconSet}/${iconName}.svg?width=unset`;
 
   try {
     const response = await fetch(apiUrl);
@@ -36,15 +36,10 @@ async function fetchIconData(iconSet: string, iconName: string): Promise<Iconify
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data = await response.json();
-    if (!data || !data.icons || !data.icons[iconName]) {
-      throw new Error(`Icon '${iconName}' not found in '${iconSet}' icon set`);
-    }
-
-    return data.icons[iconName] as IconifyIcon;
+    return await response.text();
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to fetch icon data: ${errorMessage}`);
+    throw new Error(`Failed to fetch icon SVG: ${errorMessage}`);
   }
 }
 
@@ -63,18 +58,10 @@ export async function downloadIcon(iconReference: string, config: IconifyConfig)
       fs.mkdirSync(config.outputDir, { recursive: true });
     }
 
-    // Load the icon data
-    const iconData = await fetchIconData(iconSet, iconName);
+    // Fetch SVG directly with width=unset parameter to remove width/height attributes
+    let svg = await fetchIconSvg(iconSet, iconName);
 
-    // Convert icon data to SVG
-    const renderData = iconToSVG(iconData as IconifyIcon, {
-      height: 'auto',
-    });
-
-    // Create SVG string
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${renderData.attributes.width}" height="${renderData.attributes.height}" viewBox="${renderData.attributes.viewBox}">${renderData.body}</svg>`;
-
-    // Apply transforms if specified
+    // Apply custom transforms if specified
     if (config.transforms && config.transforms.length > 0) {
       for (const transform of config.transforms) {
         // Create transform arguments object
