@@ -1,0 +1,18 @@
+{
+  "extends": ["config:recommended", ":semanticCommits"],
+  "commitMessageTopic": "{{depName}}",
+  "automergeType": "branch",
+  "automerge": true,
+  "major": {
+    "automerge": false
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["eslint"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ],
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0
+}
