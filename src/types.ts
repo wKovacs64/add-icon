@@ -1,7 +1,7 @@
 /**
  * Arguments passed to transform functions
  */
-export interface TransformArgs {
+export type TransformArgs = {
   /** The SVG content as a string */
   svg: string;
 
@@ -20,7 +20,7 @@ export type IconTransform = (args: TransformArgs) => Promise<string> | string;
 /**
  * Configuration options for the Iconify CLI
  */
-export interface IconifyConfig {
+export type IconifyConfig = {
   /** Directory to output icons */
   outputDir: string;
 
