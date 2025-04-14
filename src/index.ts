@@ -7,6 +7,7 @@ import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
 import { importModule } from './import-module.js';
+import { getPackageInfo } from './package-info.js';
 import type { IconTransform, TransformArgs } from './types.js';
 
 // Re-export types for easy importing by users
@@ -16,15 +17,28 @@ export { downloadIcon, parseIconReference } from './iconify.js';
 // Create CLI program
 const program = new Command();
 
-program
-  .name('add-icon')
-  .description('Download and transform icons from Iconify')
-  .version('1.0.0')
-  .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')
-  .option('-o, --output-dir <dir>', 'Directory to save icon')
-  .option('-c, --config <path>', 'Path to config file')
-  .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)')
-  .action(async (icon, options) => {
+// Set up the program with package info
+const setupProgram = async (): Promise<Command> => {
+  const { name, version, description } = await getPackageInfo();
+  
+  return program
+    .name(name.split('/').pop() || 'add-icon') // Remove scope from name if present
+    .description(description)
+    .version(version)
+    .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')
+    .option('-o, --output-dir <dir>', 'Directory to save icon')
+    .option('-c, --config <path>', 'Path to config file')
+    .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)');
+};
+
+// Initialize the program
+const initializedProgram = await setupProgram();
+
+initializedProgram.action(async (icon: string, options: { 
+  outputDir?: string; 
+  config?: string; 
+  transform?: string;
+}) => {
     try {
       // Load config (first from config file, then override with CLI options)
       const config = await loadConfig(options.config);
@@ -83,5 +97,5 @@ if (
     : process.argv[1] === __filename || process.argv[1] === __dirname
 ) {
   // Parse command line arguments
-  program.parse();
+  program.parse(process.argv);
 }
