@@ -1,61 +1,20 @@
 #!/usr/bin/env node
 
 import { existsSync } from 'node:fs';
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import url from 'node:url';
 import os from 'node:os';
 import { pathToFileURL } from 'node:url';
-import * as esbuild from 'esbuild';
 import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
+import { importTsModule } from './import-ts-module.js';
 import type { IconTransform, TransformArgs } from './types.js';
 
 // Re-export types for easy importing by users
 export type { IconTransform, TransformArgs };
 // Re-export other useful functions
 export { downloadIcon, parseIconReference } from './iconify.js';
-
-/**
- * Imports a TypeScript module by transpiling it in-memory with esbuild
- * @param filePath - Path to TypeScript file
- * @returns Module exports
- */
-async function importTsModuleWithEsbuild(filePath: string): Promise<any> {
-  const absolutePath = path.resolve(filePath);
-  try {
-    // Read the TypeScript file content
-    const tsCode = await fs.readFile(absolutePath, "utf-8");
-
-    // Use esbuild to transform TS to ESM JS
-    const result = await esbuild.transform(tsCode, {
-      loader: "ts", // Specify the loader (ts, tsx, js, jsx)
-      format: "esm", // Output format
-      sourcemap: false, // Disable source maps for data URI
-      sourcefile: absolutePath, // Helps with error messages
-      target: 'esnext',
-    });
-
-    const jsCode = result.code;
-
-    // Create data URI and import
-    const base64Code = Buffer.from(jsCode).toString("base64");
-    const dataUri = `data:text/javascript;base64,${base64Code}`;
-    
-    // Import the transformed code as a module
-    const importOptions = {
-      assert: { type: "javascript" } as any,
-    };
-    
-    const module = await import(dataUri, importOptions);
-    return module;
-  } catch (error) {
-    console.error(`Error importing TS module ${filePath} with esbuild:`, error);
-    throw error;
-  }
-}
-
 // Create CLI program
 const program = new Command();
 
@@ -86,7 +45,7 @@ program
           if (transformPath.endsWith('.ts')) {
             try {
               // For TypeScript files, use in-memory transpilation with esbuild
-              customTransform = await importTsModuleWithEsbuild(transformPath);
+              customTransform = await importTsModule(transformPath);
             } catch (err: unknown) {
               const errorMessage = err instanceof Error ? err.message : String(err);
               console.error(`Error loading TypeScript transform: ${errorMessage}`);

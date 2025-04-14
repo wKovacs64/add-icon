@@ -1,9 +1,8 @@
-import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import * as esbuild from 'esbuild';
 import type { IconifyConfig } from './types.js';
+import { importTsModule } from './import-ts-module.js';
 
 /**
  * Default configuration
@@ -11,45 +10,6 @@ import type { IconifyConfig } from './types.js';
 export const defaultConfig: IconifyConfig = {
   outputDir: '.', // Current directory
 };
-
-/**
- * Imports a TypeScript module by transpiling it in-memory with esbuild
- * @param filePath - Path to TypeScript file
- * @returns Module exports
- */
-async function importTsModuleWithEsbuild(filePath: string): Promise<any> {
-  const absolutePath = path.resolve(filePath);
-  try {
-    // Read the TypeScript file content
-    const tsCode = await fs.readFile(absolutePath, "utf-8");
-
-    // Use esbuild to transform TS to ESM JS
-    const result = await esbuild.transform(tsCode, {
-      loader: "ts", // Specify the loader (ts, tsx, js, jsx)
-      format: "esm", // Output format
-      sourcemap: false, // Disable source maps for data URI
-      sourcefile: absolutePath, // Helps with error messages
-      target: 'esnext',
-    });
-
-    const jsCode = result.code;
-
-    // Create data URI and import
-    const base64Code = Buffer.from(jsCode).toString("base64");
-    const dataUri = `data:text/javascript;base64,${base64Code}`;
-    
-    // Import the transformed code as a module
-    const importOptions = {
-      assert: { type: "javascript" } as any,
-    };
-    
-    const module = await import(dataUri, importOptions);
-    return module;
-  } catch (error) {
-    console.error(`Error importing TS module ${filePath} with esbuild:`, error);
-    throw error;
-  }
-}
 
 /**
  * Loads configuration from file if it exists
@@ -62,7 +22,7 @@ export async function loadConfig(configPath?: string): Promise<IconifyConfig> {
     if (configPath) {
       // Choose loader based on file extension
       if (configPath.endsWith('.ts')) {
-        const config = await importTsModuleWithEsbuild(configPath);
+        const config = await importTsModule(configPath);
         return { ...defaultConfig, ...config.default };
       } else {
         // For JS files, use standard dynamic import
@@ -79,7 +39,7 @@ export async function loadConfig(configPath?: string): Promise<IconifyConfig> {
     // Check for TypeScript config first
     if (existsSync(tsConfigPath)) {
       try {
-        const config = await importTsModuleWithEsbuild(tsConfigPath);
+        const config = await importTsModule(tsConfigPath);
         return { ...defaultConfig, ...config.default };
       } catch (err) {
         console.error('Error loading TypeScript config, falling back to default config:', err);
