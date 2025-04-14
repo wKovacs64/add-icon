@@ -117,10 +117,10 @@ function addCustomAttribute(args: TransformArgs): string {
   return args.svg.replace(/<svg/, `<svg data-icon="${args.iconName}"`);
 }
 
-const config: IconifyConfig = {
+const config = {
   outputDir: './assets/icons',
   transforms: [addCustomAttribute],
-};
+} satisfies IconifyConfig;
 
 export default config;
 ```
