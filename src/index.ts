@@ -2,6 +2,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import url from 'node:url';
+import os from 'node:os';
 import { execSync } from 'node:child_process';
 import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
@@ -122,9 +124,15 @@ program
     }
   });
 
-// This logic only runs when executed directly as CLI,
-// not when imported as a library
-if (import.meta.url === `file://${process.argv[1]}`) {
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// This logic only runs when executed directly as CLI, not when imported as a library
+if (
+  os.platform() === 'win32'
+    ? process.argv[1] === __filename
+    : process.argv[1] === __filename || process.argv[1] === __dirname
+) {
   // Parse command line arguments
   program.parse();
 }
