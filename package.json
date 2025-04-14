@@ -1,6 +1,6 @@
 {
   "name": "@wkovacs64/add-icon",
-  "version": "0.1.0",
+  "version": "0.1.0-dev.8525808f",
   "description": "CLI tool to download and transform icons from Iconify",
   "keywords": [
     "iconify",
@@ -18,7 +18,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "add-icon": "./dist/index.js"
+    "add-icon": "dist/index.js"
   },
   "files": [
     "dist"
