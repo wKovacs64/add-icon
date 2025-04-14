@@ -6,7 +6,7 @@ import type { IconifyConfig } from './types.js';
  * Default configuration
  */
 export const defaultConfig: IconifyConfig = {
-  outputDir: './icons',
+  outputDir: '.', // Current directory
 };
 
 /**
