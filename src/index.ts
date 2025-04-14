@@ -1,8 +1,4 @@
-#!/usr/bin/env node
-
 import path from 'node:path';
-import url from 'node:url';
-import os from 'node:os';
 import { Command } from 'commander';
 import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
@@ -87,15 +83,7 @@ initializedProgram.action(async (icon: string, options: {
     }
   });
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// This logic only runs when executed directly as CLI, not when imported as a library
-if (
-  os.platform() === 'win32'
-    ? process.argv[1] === __filename
-    : process.argv[1] === __filename || process.argv[1] === __dirname
-) {
-  // Parse command line arguments
+// Parse command line arguments if called directly
+export function runCli(): void {
   program.parse(process.argv);
 }
