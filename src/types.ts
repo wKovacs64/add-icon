@@ -22,7 +22,7 @@ export type TransformFunction = (args: TransformArgs) => Promise<string> | strin
  */
 export type Config = {
   /** Directory to output icons */
-  outputDir: string;
+  outputDir?: string;
 
   /** Array of transform functions to apply to icons */
   transforms?: TransformFunction[];

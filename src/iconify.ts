@@ -53,9 +53,12 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
   try {
     const { iconSet, iconName } = parseIconReference(iconReference);
 
+    // Use default output directory if not specified
+    const outputDir = config.outputDir || '.';
+    
     // Ensure the output directory exists
-    if (!fs.existsSync(config.outputDir)) {
-      fs.mkdirSync(config.outputDir, { recursive: true });
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
     }
 
     // Fetch SVG directly with width=unset parameter to remove width/height attributes
@@ -78,7 +81,7 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
 
     // Create file name
     const fileName = `${iconSet}-${iconName}.svg`;
-    const filePath = path.join(config.outputDir, fileName);
+    const filePath = path.join(outputDir, fileName);
 
     // Write the SVG file
     fs.writeFileSync(filePath, svg, 'utf8');

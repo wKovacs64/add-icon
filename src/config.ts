@@ -21,7 +21,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     if (configPath) {
       // Use the unified import method for both JS and TS files
       const config = await importModule(configPath);
-      return { ...defaultConfig, ...config.default };
+      return { ...defaultConfig, ...(config.default || {}) };
     }
 
     // Try to find a config file in the current directory, checking both JS and TS
@@ -32,7 +32,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     if (existsSync(tsConfigPath)) {
       try {
         const config = await importModule(tsConfigPath);
-        return { ...defaultConfig, ...config.default };
+        return { ...defaultConfig, ...(config.default || {}) };
       } catch (err) {
         console.error('Error loading TypeScript config, falling back to default config:', err);
         return defaultConfig;
@@ -43,7 +43,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     if (existsSync(jsConfigPath)) {
       try {
         const config = await importModule(jsConfigPath);
-        return { ...defaultConfig, ...config.default };
+        return { ...defaultConfig, ...(config.default || {}) };
       } catch (err) {
         console.error('Error loading JavaScript config, falling back to default config:', err);
         return defaultConfig;
