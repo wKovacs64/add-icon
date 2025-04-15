@@ -14,17 +14,23 @@ npm install @wkovacs64/add-icon
 Or use it directly with npx without installing:
 
 ```bash
-npx @wkovacs64/add-icon <icon> [options]
+npx @wkovacs64/add-icon <icon>... [options]
 ```
 
 ## Usage
 
 ### Basic Usage
 
-Download an icon to the specified directory:
+Download a single icon to the specified directory:
 
 ```bash
 npx @wkovacs64/add-icon heroicons:arrow-up-circle --output-dir ./app/assets/svg-icons
+```
+
+Download multiple icons in one command:
+
+```bash
+npx @wkovacs64/add-icon heroicons:arrow-up-circle mdi:home lucide:github --output-dir ./app/assets/svg-icons
 ```
 
 ### Transformations

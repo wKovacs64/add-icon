@@ -22,8 +22,8 @@ const setupProgram = async (): Promise<Command> => {
     .name(name.split('/').pop() || name)
     .description(description)
     .version(version, '-v, --version', 'Output the current version')
-    .argument('<icon>', 'Icon reference (e.g., heroicons:arrow-up-circle)')
-    .option('-o, --output-dir <dir>', 'Directory to save icon')
+    .argument('<icons...>', 'Icon references (e.g., heroicons:arrow-up-circle mdi:home)')
+    .option('-o, --output-dir <dir>', 'Directory to save icons')
     .option('-c, --config <path>', 'Path to config file')
     .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)');
 };
@@ -33,7 +33,7 @@ const initializedProgram = await setupProgram();
 
 initializedProgram.action(
   async (
-    icon: string,
+    icons: string[],
     options: {
       outputDir?: string;
       config?: string;
@@ -77,10 +77,31 @@ initializedProgram.action(
         }
       }
 
-      // Download the icon
-      console.log(`Downloading icon: ${icon}...`);
-      const savedPath = await downloadIcon(icon, config);
-      console.log(`✓ Icon saved to: ${savedPath}`);
+      // Download all icons
+      const results = [];
+      for (const icon of icons) {
+        console.log(`Downloading icon: ${icon}...`);
+        try {
+          const savedPath = await downloadIcon(icon, config);
+          console.log(`✓ Icon saved to: ${savedPath}`);
+          results.push({ icon, path: savedPath, success: true });
+        } catch (iconError: unknown) {
+          const errorMessage = iconError instanceof Error ? iconError.message : String(iconError);
+          console.error(`Error downloading ${icon}: ${errorMessage}`);
+          results.push({ icon, error: errorMessage, success: false });
+        }
+      }
+
+      // Report summary if multiple icons
+      if (icons.length > 1) {
+        const successful = results.filter((r) => r.success).length;
+        console.log(`\nSummary: Downloaded ${successful}/${icons.length} icons`);
+
+        // If any failed, exit with error
+        if (successful < icons.length) {
+          process.exit(1);
+        }
+      }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error(`Error: ${errorMessage}`);
