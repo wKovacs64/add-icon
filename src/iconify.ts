@@ -55,7 +55,9 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
     const { iconSet, iconName } = parseIconReference(iconReference);
 
     // Use default output directory if not specified
-    const outputDir = config.outputDir || defaultConfig.outputDir;
+    // We can safely use non-null assertion here because defaultConfig.outputDir
+    // is defined in config.ts, meaning outputDir will never be undefined
+    const outputDir = config.outputDir || defaultConfig.outputDir!;
     
     // Ensure the output directory exists
     if (!fs.existsSync(outputDir)) {
