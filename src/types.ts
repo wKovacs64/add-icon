@@ -15,15 +15,15 @@ export type TransformArgs = {
 /**
  * SVG transformation function type
  */
-export type IconTransform = (args: TransformArgs) => Promise<string> | string;
+export type TransformFunction = (args: TransformArgs) => Promise<string> | string;
 
 /**
- * Configuration options for the Iconify CLI
+ * Configuration options for the add-icon CLI
  */
-export type IconifyConfig = {
+export type Config = {
   /** Directory to output icons */
   outputDir: string;
 
   /** Array of transform functions to apply to icons */
-  transforms?: IconTransform[];
+  transforms?: TransformFunction[];
 }

@@ -4,12 +4,13 @@ import { downloadIcon } from './iconify.js';
 import { loadConfig } from './config.js';
 import { importModule } from './import-module.js';
 import { getPackageInfo } from './package-info.js';
-import type { IconTransform, TransformArgs } from './types.js';
+import type { TransformFunction, TransformArgs, Config } from './types.js';
 
 // Re-export types for easy importing by users
-export type { IconTransform, TransformArgs };
+export type { TransformFunction, TransformArgs, Config };
 // Re-export other useful functions
 export { downloadIcon, parseIconReference } from './iconify.js';
+export { loadConfig, defaultConfig } from './config.js';
 // Create CLI program
 const program = new Command();
 

@@ -112,7 +112,7 @@ export default {
 You can create a TypeScript configuration file and the tool will import it directly:
 
 ```ts
-import type { IconifyConfig, TransformArgs } from '@wkovacs64/add-icon';
+import type { Config, TransformArgs, TransformFunction } from '@wkovacs64/add-icon';
 
 // Define custom transform
 function addCustomAttribute(args: TransformArgs): string {
@@ -122,68 +122,9 @@ function addCustomAttribute(args: TransformArgs): string {
 const config = {
   outputDir: './assets/icons',
   transforms: [addCustomAttribute],
-} satisfies IconifyConfig;
+} satisfies Config;
 
 export default config;
-```
-
-> **Note:** TypeScript configuration and transform files are compiled in-memory using esbuild, without creating temporary JavaScript files. This provides a seamless TypeScript experience with no extra build steps.
-
-## Using as a Library
-
-You can also use iconify-cli as a library in your own projects:
-
-### JavaScript
-
-```js
-import { downloadIcon } from '@wkovacs64/add-icon';
-
-// Create custom transform
-function addCustomAttribute(args) {
-  return args.svg.replace(/<svg/, `<svg data-custom="${args.iconSet}"`);
-}
-
-// Download an icon with transforms
-async function downloadCustomIcon() {
-  const iconPath = await downloadIcon('heroicons:heart', {
-    outputDir: './icons',
-    transforms: [addCustomAttribute],
-  });
-
-  console.log(`Icon saved to: ${iconPath}`);
-}
-
-downloadCustomIcon();
-```
-
-### TypeScript
-
-```ts
-import { downloadIcon, type TransformArgs } from '@wkovacs64/add-icon';
-
-// Create custom transform
-const addCustomAttribute = (args: TransformArgs): string => {
-  return args.svg.replace(/<svg/, `<svg data-custom="${args.iconSet}"`);
-};
-
-// Download an icon with transforms
-async function downloadCustomIcon(): Promise<void> {
-  try {
-    const iconPath = await downloadIcon('heroicons:heart', {
-      outputDir: './icons',
-      transforms: [addCustomAttribute],
-    });
-
-    console.log(`Icon saved to: ${iconPath}`);
-  } catch (error) {
-    console.error(
-      'Error downloading icon:',
-      error instanceof Error ? error.message : String(error),
-    );
-  }
-}
-
-downloadCustomIcon();
 ```
 
 ## License

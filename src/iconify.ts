@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import type { IconifyConfig, TransformArgs } from './types.js';
+import type { Config, TransformArgs } from './types.js';
 
 /**
  * Parses an icon reference into iconSet and iconName
@@ -49,7 +49,7 @@ async function fetchIconSvg(iconSet: string, iconName: string): Promise<string> 
  * @param config - Configuration options
  * @returns Path to saved icon file
  */
-export async function downloadIcon(iconReference: string, config: IconifyConfig): Promise<string> {
+export async function downloadIcon(iconReference: string, config: Config): Promise<string> {
   try {
     const { iconSet, iconName } = parseIconReference(iconReference);
 

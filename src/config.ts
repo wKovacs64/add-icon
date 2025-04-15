@@ -1,12 +1,12 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import type { IconifyConfig } from './types.js';
+import type { Config } from './types.js';
 import { importModule } from './import-module.js';
 
 /**
  * Default configuration
  */
-export const defaultConfig: IconifyConfig = {
+export const defaultConfig: Config = {
   outputDir: '.', // Current directory
 };
 
@@ -15,7 +15,7 @@ export const defaultConfig: IconifyConfig = {
  * @param configPath - Path to config file
  * @returns Configuration object
  */
-export async function loadConfig(configPath?: string): Promise<IconifyConfig> {
+export async function loadConfig(configPath?: string): Promise<Config> {
   try {
     // If a specific config path is provided, use it
     if (configPath) {
