@@ -29,7 +29,9 @@ npx @wkovacs64/add-icon heroicons:arrow-up-circle --output-dir ./app/assets/svg-
 
 ### Transformations
 
-The tool fetches SVG icons directly from the Iconify API with width and height attributes removed automatically. You can optionally provide a transform file using either JavaScript or TypeScript containing custom transformations for more advanced modifications.
+The tool fetches SVG icons directly from the Iconify API with width and height attributes removed
+automatically. You can optionally provide a transform file using either JavaScript or TypeScript
+containing custom transformations for more advanced modifications.
 
 #### TypeScript Transform Example
 
@@ -56,7 +58,8 @@ npx @wkovacs64/add-icon heroicons:arrow-up-circle --transform ./my-transform.ts
 
 ### Configuration File
 
-You can create a configuration file in your project root, using either JavaScript (`add-icon.config.js`) or TypeScript (`add-icon.config.ts`).
+You can create a configuration file in your project root, using either JavaScript
+(`add-icon.config.js`) or TypeScript (`add-icon.config.ts`).
 
 #### TypeScript Configuration Example
 

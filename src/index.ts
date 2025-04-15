@@ -17,7 +17,7 @@ const program = new Command();
 // Set up the program with package info
 const setupProgram = async (): Promise<Command> => {
   const { name, version, description } = await getPackageInfo();
-  
+
   return program
     .name(name.split('/').pop() || name)
     .description(description)
@@ -31,11 +31,15 @@ const setupProgram = async (): Promise<Command> => {
 // Initialize the program
 const initializedProgram = await setupProgram();
 
-initializedProgram.action(async (icon: string, options: { 
-  outputDir?: string; 
-  config?: string; 
-  transform?: string;
-}) => {
+initializedProgram.action(
+  async (
+    icon: string,
+    options: {
+      outputDir?: string;
+      config?: string;
+      transform?: string;
+    },
+  ) => {
     try {
       // Load config (first from config file, then override with CLI options)
       const config = await loadConfig(options.config);
@@ -82,7 +86,8 @@ initializedProgram.action(async (icon: string, options: {
       console.error(`Error: ${errorMessage}`);
       process.exit(1);
     }
-  });
+  },
+);
 
 // Parse command line arguments if called directly
 export function runCli(): void {

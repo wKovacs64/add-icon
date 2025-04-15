@@ -11,7 +11,7 @@ export async function importModule(filePath: string): Promise<any> {
   const absolutePath = path.resolve(filePath);
   try {
     // Read the module file content
-    const code = await fs.readFile(absolutePath, "utf-8");
+    const code = await fs.readFile(absolutePath, 'utf-8');
 
     // Determine the appropriate loader based on file extension
     const loader = absolutePath.endsWith('.ts') ? 'ts' : 'js';
@@ -19,7 +19,7 @@ export async function importModule(filePath: string): Promise<any> {
     // Use esbuild to transform the code to ESM JS
     const result = await esbuild.transform(code, {
       loader, // Automatically use the appropriate loader
-      format: "esm", // Output format
+      format: 'esm', // Output format
       sourcemap: false, // Disable source maps for data URI
       sourcefile: absolutePath, // Helps with error messages
       target: 'esnext',
@@ -28,9 +28,9 @@ export async function importModule(filePath: string): Promise<any> {
     const jsCode = result.code;
 
     // Create data URI and import
-    const base64Code = Buffer.from(jsCode).toString("base64");
+    const base64Code = Buffer.from(jsCode).toString('base64');
     const dataUri = `data:text/javascript;base64,${base64Code}`;
-    
+
     // Import the transformed code as a module
     return await import(dataUri);
   } catch (error) {

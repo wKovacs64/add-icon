@@ -15,15 +15,15 @@ export async function getPackageInfo(): Promise<{
   const currentFileUrl = import.meta.url;
   const currentFilePath = fileURLToPath(currentFileUrl);
   const currentDir = path.dirname(currentFilePath);
-  
+
   // Go up one level from src/ to the package root
   const packageJsonPath = path.resolve(currentDir, '..', 'package.json');
-  
+
   try {
     // Read and parse package.json
     const packageJsonContent = await fs.readFile(packageJsonPath, 'utf-8');
     const packageJson = JSON.parse(packageJsonContent);
-    
+
     return {
       name: packageJson.name || 'unknown',
       version: packageJson.version || '0.0.0',
@@ -31,7 +31,7 @@ export async function getPackageInfo(): Promise<{
     };
   } catch (error) {
     console.warn('Failed to read package.json:', error);
-    
+
     // Fallback values
     return {
       name: 'unknown',

@@ -10,7 +10,7 @@ export type TransformArgs = {
 
   /** The icon name (e.g., 'arrow-up-circle') */
   iconName: string;
-}
+};
 
 /**
  * SVG transformation function type
@@ -26,4 +26,4 @@ export type Config = {
 
   /** Array of transform functions to apply to icons */
   transforms?: TransformFunction[];
-}
+};

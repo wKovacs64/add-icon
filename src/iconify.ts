@@ -56,7 +56,7 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
 
     // Use default output directory if not specified
     const outputDir = config.outputDir || defaultConfig.outputDir;
-    
+
     // Ensure the output directory exists
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
