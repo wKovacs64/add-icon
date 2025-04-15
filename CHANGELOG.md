@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.0
+
+### Minor Changes
+
+- [#4](https://github.com/wKovacs64/add-icon/pull/4) [`b1b0fc2`](https://github.com/wKovacs64/add-icon/commit/b1b0fc2e8304e79c1c51845f3579546bb3cfc0b0) Thanks [@wKovacs64](https://github.com/wKovacs64)! - Add support for downloading multiple icons at once
+
 ## 1.0.0
 
 ### Major Changes
