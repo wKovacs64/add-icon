@@ -6,9 +6,9 @@ import { importModule } from './import-module.js';
 /**
  * Default configuration
  */
-export const defaultConfig: Config = {
+export const defaultConfig = {
   outputDir: '.', // Current directory
-};
+} as const satisfies Config;
 
 /**
  * Loads configuration from file if it exists
