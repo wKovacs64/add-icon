@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Config, TransformArgs } from './types.js';
+import { defaultConfig } from './config.js';
 
 /**
  * Parses an icon reference into iconSet and iconName
@@ -54,7 +55,7 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
     const { iconSet, iconName } = parseIconReference(iconReference);
 
     // Use default output directory if not specified
-    const outputDir = config.outputDir || '.';
+    const outputDir = config.outputDir || defaultConfig.outputDir;
     
     // Ensure the output directory exists
     if (!fs.existsSync(outputDir)) {
