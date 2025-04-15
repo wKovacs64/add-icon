@@ -14,58 +14,27 @@ npm install @wkovacs64/add-icon
 Or use it directly with npx without installing:
 
 ```bash
-npx @wkovacs64/add-icon heroicons:arrow-up-circle
+npx @wkovacs64/add-icon <icon> [options]
 ```
 
 ## Usage
 
 ### Basic Usage
 
-Download an icon:
+Download an icon to the specified directory:
 
 ```bash
-npx @wkovacs64/add-icon heroicons:arrow-up-circle
-```
-
-Specify an output directory:
-
-```bash
-npx @wkovacs64/add-icon heroicons:arrow-up-circle --output-dir ./my-icons
+npx @wkovacs64/add-icon heroicons:arrow-up-circle --output-dir ./app/assets/svg-icons
 ```
 
 ### Transformations
 
-The tool fetches SVG icons directly from the Iconify API with width and height attributes removed automatically. You can add custom transformations for more advanced modifications.
+The tool fetches SVG icons directly from the Iconify API with width and height attributes removed automatically. You can optionally provide a transform file using either JavaScript or TypeScript containing custom transformations for more advanced modifications.
 
-### Custom Transformations
-
-You can write custom transforms in either JavaScript or TypeScript!
-
-#### JavaScript Transform
-
-Create a custom transform file (e.g., `my-transform.js`):
-
-```js
-/**
- * Custom transform to add a title element to SVG
- * @param {Object} args - Transform arguments
- * @param {string} args.svg - SVG content
- * @param {string} args.iconName - Icon name (e.g., 'heroicons:arrow-up-circle')
- * @param {string} args.prefix - Icon set prefix (e.g., 'heroicons')
- * @param {string} args.name - Icon name without prefix (e.g., 'arrow-up-circle')
- * @returns {string} - Transformed SVG
- */
-export default function addTitle(args) {
-  const titleElement = `<title>${args.iconName}</title>`;
-  return args.svg.replace(/<svg([^>]*)>/, `<svg$1>${titleElement}`);
-}
-```
-
-#### TypeScript Transform
-
-Create a custom transform file (e.g., `my-transform.ts`) that will be imported directly:
+#### TypeScript Transform Example
 
 ```ts
+// my-transform.ts
 import type { TransformArgs } from '@wkovacs64/add-icon';
 
 /**
@@ -82,34 +51,14 @@ export default function addTitle(args: TransformArgs): string {
 Then use it with the CLI:
 
 ```bash
-# JavaScript transform
-npx @wkovacs64/add-icon heroicons:arrow-up-circle --transform ./my-transform.js
-
-# TypeScript transform
 npx @wkovacs64/add-icon heroicons:arrow-up-circle --transform ./my-transform.ts
 ```
 
-## Configuration File
+### Configuration File
 
 You can create a configuration file in your project root, using either JavaScript (`add-icon.config.js`) or TypeScript (`add-icon.config.ts`).
 
-### JavaScript Configuration
-
-```js
-// Define custom transform
-function addCustomAttribute(args) {
-  return args.svg.replace(/<svg/, `<svg data-icon="${args.iconName}"`);
-}
-
-export default {
-  outputDir: './assets/icons',
-  transforms: [addCustomAttribute],
-};
-```
-
-### TypeScript Configuration
-
-You can create a TypeScript configuration file and the tool will import it directly:
+#### TypeScript Configuration Example
 
 ```ts
 import type { Config, TransformArgs, TransformFunction } from '@wkovacs64/add-icon';
