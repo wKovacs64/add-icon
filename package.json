@@ -9,7 +9,17 @@
     "cli",
     "download"
   ],
-  "author": "Justin R. Hall <justin.r.hall@gmail.com>",
+  "author": {
+    "name": "Justin Hall",
+    "email": "justin.r.hall@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wKovacs64/add-icon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wKovacs64/add-icon/issues"
+  },
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
