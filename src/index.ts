@@ -21,11 +21,12 @@ const setupProgram = async (): Promise<Command> => {
   return program
     .name(name.split('/').pop() || name)
     .description(description)
-    .version(version, '-v, --version', 'Output the current version')
-    .argument('<icons...>', 'Icon references (e.g., heroicons:arrow-up-circle mdi:home)')
+    .option('--init', 'Generate a config file in the current directory')
     .option('-o, --output-dir <dir>', 'Directory to save icons')
     .option('-c, --config <path>', 'Path to config file')
-    .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)');
+    .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)')
+    .version(version, '-v, --version', 'Output the current version')
+    .argument('[icons...]', 'Icon references (e.g., heroicons:arrow-up-circle mdi:home)');
 };
 
 // Initialize the program
@@ -35,12 +36,43 @@ initializedProgram.action(
   async (
     icons: string[],
     options: {
+      init?: boolean;
       outputDir?: string;
       config?: string;
       transform?: string;
     },
   ) => {
     try {
+      // Validate that icons are provided when not using --init
+      if (!options.init && (!icons || icons.length === 0)) {
+        console.error('Error: At least one icon reference is required.');
+        program.help();
+        return;
+      }
+
+      // Handle --init flag to generate a config file
+      if (options.init) {
+        const fs = await import('node:fs/promises');
+        const configFileContent = `import type { Config } from '@wkovacs64/add-icon';
+
+const config = {
+  outputDir: 'app/assets/svg-icons',
+} satisfies Config;
+
+export default config;
+`;
+        try {
+          const configFilePath = path.resolve(process.cwd(), 'add-icon.config.ts');
+          await fs.writeFile(configFilePath, configFileContent, 'utf-8');
+          console.log(`✓ Configuration file created at: ${configFilePath}`);
+          process.exit(0);
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          console.error(`Error creating config file: ${errorMessage}`);
+          process.exit(1);
+        }
+      }
+
       // Load config (first from config file, then override with CLI options)
       const config = await loadConfig(options.config);
 
