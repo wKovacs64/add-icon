@@ -39,8 +39,6 @@
     "clean": "del-cli dist",
     "prebuild": "npm run --silent clean",
     "prepublishOnly": "run-p --silent lint typecheck build",
-    "start": "node dist/index.js",
-    "dev": "tsx src/index.ts",
     "typecheck": "attw --pack --profile esm-only",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --cache --write .",
