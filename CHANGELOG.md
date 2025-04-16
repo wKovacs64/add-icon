@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.0
+
+### Minor Changes
+
+- [#8](https://github.com/wKovacs64/add-icon/pull/8) [`8bf295e`](https://github.com/wKovacs64/add-icon/commit/8bf295e10508b43ea9bbd2b9b7f8c894ca43e1fc) Thanks [@wKovacs64](https://github.com/wKovacs64)! - Add --init flag to generate a config file
+
 ## 1.1.0
 
 ### Minor Changes
