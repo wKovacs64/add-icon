@@ -3,6 +3,10 @@
 A command-line tool to download icons from the [Iconify Framework](https://iconify.design/) and
 apply custom transformations.
 
+<!-- prettier-ignore -->
+> [!WARNING]
+> This is "vibe coded" AI slop. I did not write any of this code by hand. Use at your own risk.
+
 ## Installation
 
 Add it to your project:
