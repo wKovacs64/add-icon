@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.1
+
+### Patch Changes
+
+- [#12](https://github.com/wKovacs64/add-icon/pull/12) [`0d6d296`](https://github.com/wKovacs64/add-icon/commit/0d6d2966bf5f987a763ba330b263a570bc83b6c7) Thanks [@wKovacs64](https://github.com/wKovacs64)! - Fix bin script execution on Linux by simplifying the entry point file
+
 ## 1.2.0
 
 ### Minor Changes
