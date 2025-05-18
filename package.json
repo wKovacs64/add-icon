@@ -52,7 +52,7 @@
     "node": ">=20.19.0"
   },
   "dependencies": {
-    "commander": "^13.1.0",
+    "commander": "^14.0.0",
     "esbuild": "~0.25.2",
     "typescript": "^5.8.3"
   },
