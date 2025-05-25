@@ -65,7 +65,7 @@
     "@wkovacs64/prettier-config": "4.1.1",
     "del-cli": "6.0.0",
     "eslint": "9.27.0",
-    "npm-run-all2": "8.0.3",
+    "npm-run-all2": "8.0.4",
     "prettier": "3.5.3",
     "tsx": "4.19.4"
   }
