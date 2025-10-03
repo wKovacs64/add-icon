@@ -62,7 +62,7 @@
     "@changesets/cli": "2.29.7",
     "@types/node": "22.18.8",
     "@wkovacs64/eslint-config": "7.9.1",
-    "@wkovacs64/prettier-config": "4.2.1",
+    "@wkovacs64/prettier-config": "4.2.2",
     "del-cli": "7.0.0",
     "eslint": "9.36.0",
     "npm-run-all2": "8.0.4",
