@@ -1,0 +1,5 @@
+# .gitignore and...
+
+.changeset
+package.json
+pnpm-lock.yaml

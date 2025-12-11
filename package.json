@@ -36,20 +36,21 @@
   "scripts": {
     "build": "tsc",
     "clean": "del-cli dist",
-    "prebuild": "npm run --silent clean",
+    "prebuild": "pnpm run --silent clean",
     "prepublishOnly": "run-p --silent lint typecheck build",
     "typecheck": "attw --pack --profile esm-only",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --cache --write .",
     "format:check": "prettier --cache --check .",
     "changeset": "changeset",
-    "changeset:version": "changeset version && npm install --package-lock-only",
+    "changeset:version": "changeset version && pnpm install",
     "changeset:publish": "changeset publish"
   },
   "prettier": "@wkovacs64/prettier-config",
   "engines": {
     "node": ">=20.19.0"
   },
+  "packageManager": "pnpm@10.25.0",
   "dependencies": {
     "commander": "^14.0.0",
     "esbuild": "~0.27.0",
