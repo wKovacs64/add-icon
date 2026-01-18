@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.2
+
+### Patch Changes
+
+- [#32](https://github.com/wKovacs64/add-icon/pull/32) [`eb02068`](https://github.com/wKovacs64/add-icon/commit/eb0206821144185e6eb59c9a43c13bdedad8cc23) Thanks [@wKovacs64](https://github.com/wKovacs64)! - Fix preview publishing by adding `type` to the `repository` section of `package.json`.
+
 ## 1.2.1
 
 ### Patch Changes
