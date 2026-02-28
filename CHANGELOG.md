@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.2
+
+### Patch Changes
+
+- [#36](https://github.com/wKovacs64/add-icon/pull/36) [`e6fbe90`](https://github.com/wKovacs64/add-icon/commit/e6fbe90f29c3b6c5645a57861fcadf5cd0682234) Thanks [@wKovacs64](https://github.com/wKovacs64)! - Preserve caught error cause in rethrown errors
+
 ## 1.2.1
 
 ### Patch Changes
