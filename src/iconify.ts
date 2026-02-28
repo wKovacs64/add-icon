@@ -40,7 +40,7 @@ async function fetchIconSvg(iconSet: string, iconName: string): Promise<string> 
     return await response.text();
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to fetch icon SVG: ${errorMessage}`);
+    throw new Error(`Failed to fetch icon SVG: ${errorMessage}`, { cause: error });
   }
 }
 
@@ -90,6 +90,6 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
     return filePath;
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to download icon: ${errorMessage}`);
+    throw new Error(`Failed to download icon: ${errorMessage}`, { cause: error });
   }
 }
