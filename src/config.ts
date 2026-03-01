@@ -1,13 +1,13 @@
-import { existsSync } from 'node:fs';
-import path from 'node:path';
-import type { Config } from './types.js';
-import { importModule } from './import-module.js';
+import { existsSync } from "node:fs";
+import path from "node:path";
+import type { Config } from "./types.js";
+import { importModule } from "./import-module.js";
 
 /**
  * Default configuration
  */
 export const defaultConfig = {
-  outputDir: '.', // Current directory
+  outputDir: ".", // Current directory
 } as const satisfies Config;
 
 /**
@@ -25,8 +25,8 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     }
 
     // Try to find a config file in the current directory, checking both JS and TS
-    const jsConfigPath = path.resolve(process.cwd(), 'add-icon.config.js');
-    const tsConfigPath = path.resolve(process.cwd(), 'add-icon.config.ts');
+    const jsConfigPath = path.resolve(process.cwd(), "add-icon.config.js");
+    const tsConfigPath = path.resolve(process.cwd(), "add-icon.config.ts");
 
     // Check for TypeScript config first
     if (existsSync(tsConfigPath)) {
@@ -34,7 +34,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
         const config = await importModule(tsConfigPath);
         return { ...defaultConfig, ...(config.default || {}) };
       } catch (err) {
-        console.error('Error loading TypeScript config, falling back to default config:', err);
+        console.error("Error loading TypeScript config, falling back to default config:", err);
         return defaultConfig;
       }
     }
@@ -45,7 +45,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
         const config = await importModule(jsConfigPath);
         return { ...defaultConfig, ...(config.default || {}) };
       } catch (err) {
-        console.error('Error loading JavaScript config, falling back to default config:', err);
+        console.error("Error loading JavaScript config, falling back to default config:", err);
         return defaultConfig;
       }
     }
@@ -53,7 +53,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     // Fall back to default config
     return defaultConfig;
   } catch (error) {
-    console.error('Error loading config, using default config:', error);
+    console.error("Error loading config, using default config:", error);
     return defaultConfig;
   }
 }
