@@ -47,7 +47,7 @@ containing custom transformations for more advanced modifications.
 
 ```ts
 // my-transform.ts
-import type { TransformArgs } from '@wkovacs64/add-icon';
+import type { TransformArgs } from "@wkovacs64/add-icon";
 
 /**
  * Custom transform to add a title element to SVG
@@ -74,7 +74,7 @@ You can create a configuration file in your project root, using either JavaScrip
 #### TypeScript Configuration Example
 
 ```ts
-import type { Config, TransformArgs, TransformFunction } from '@wkovacs64/add-icon';
+import type { Config, TransformArgs, TransformFunction } from "@wkovacs64/add-icon";
 
 // Define custom transform
 function addCustomAttribute(args: TransformArgs): string {
@@ -82,7 +82,7 @@ function addCustomAttribute(args: TransformArgs): string {
 }
 
 const config = {
-  outputDir: './assets/icons',
+  outputDir: "./assets/icons",
   transforms: [addCustomAttribute],
 } satisfies Config;
 

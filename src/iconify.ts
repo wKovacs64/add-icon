@@ -1,7 +1,7 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import type { Config, TransformArgs } from './types.js';
-import { defaultConfig } from './config.js';
+import fs from "node:fs";
+import path from "node:path";
+import type { Config, TransformArgs } from "./types.js";
+import { defaultConfig } from "./config.js";
 
 /**
  * Parses an icon reference into iconSet and iconName
@@ -9,7 +9,7 @@ import { defaultConfig } from './config.js';
  * @returns Object with iconSet and iconName
  */
 export function parseIconReference(iconReference: string): { iconSet: string; iconName: string } {
-  const parts = iconReference.split(':');
+  const parts = iconReference.split(":");
 
   if (parts.length !== 2 || !parts[0] || !parts[1]) {
     throw new Error(`Invalid icon reference: ${iconReference}. Expected format: iconSet:iconName`);
@@ -85,7 +85,7 @@ export async function downloadIcon(iconReference: string, config: Config): Promi
     const filePath = path.join(outputDir, fileName);
 
     // Write the SVG file
-    fs.writeFileSync(filePath, svg, 'utf8');
+    fs.writeFileSync(filePath, svg, "utf8");
 
     return filePath;
   } catch (error: unknown) {

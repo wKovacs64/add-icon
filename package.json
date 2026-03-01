@@ -3,12 +3,16 @@
   "version": "1.2.2",
   "description": "CLI tool to download and transform icons from Iconify",
   "keywords": [
+    "cli",
+    "download",
     "iconify",
     "icons",
-    "svg",
-    "cli",
-    "download"
+    "svg"
   ],
+  "bugs": {
+    "url": "https://github.com/wKovacs64/add-icon/issues"
+  },
+  "license": "MIT",
   "author": {
     "name": "Justin Hall",
     "email": "justin.r.hall@gmail.com"
@@ -17,16 +21,6 @@
     "type": "git",
     "url": "git+https://github.com/wKovacs64/add-icon.git"
   },
-  "bugs": {
-    "url": "https://github.com/wKovacs64/add-icon/issues"
-  },
-  "license": "MIT",
-  "type": "module",
-  "main": "dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json"
-  },
   "bin": {
     "add-icon": "bin/add-icon.js"
   },
@@ -34,6 +28,12 @@
     "dist",
     "bin"
   ],
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "del-cli dist",
@@ -41,17 +41,12 @@
     "prepublishOnly": "run-p --silent lint typecheck build",
     "typecheck": "attw --pack --profile esm-only",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-    "format": "prettier --cache --write .",
-    "format:check": "prettier --cache --check .",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "changeset": "changeset",
     "changeset:version": "changeset version && pnpm install",
     "changeset:publish": "changeset publish"
   },
-  "prettier": "@wkovacs64/prettier-config",
-  "engines": {
-    "node": ">=20.19.0"
-  },
-  "packageManager": "pnpm@10.30.1",
   "dependencies": {
     "commander": "^14.0.0",
     "esbuild": "~0.27.0",
@@ -63,10 +58,13 @@
     "@changesets/cli": "2.29.8",
     "@types/node": "24.10.13",
     "@wkovacs64/eslint-config": "7.13.0",
-    "@wkovacs64/prettier-config": "4.2.4",
     "del-cli": "7.0.0",
     "eslint": "9.39.3",
     "npm-run-all2": "8.0.4",
-    "prettier": "3.8.1"
-  }
+    "oxfmt": "0.35.0"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "pnpm@10.30.1"
 }

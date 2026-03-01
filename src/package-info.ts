@@ -1,6 +1,6 @@
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-import fs from 'node:fs/promises';
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 /**
  * Loads package info from package.json
@@ -17,26 +17,26 @@ export async function getPackageInfo(): Promise<{
   const currentDir = path.dirname(currentFilePath);
 
   // Go up one level from src/ to the package root
-  const packageJsonPath = path.resolve(currentDir, '..', 'package.json');
+  const packageJsonPath = path.resolve(currentDir, "..", "package.json");
 
   try {
     // Read and parse package.json
-    const packageJsonContent = await fs.readFile(packageJsonPath, 'utf-8');
+    const packageJsonContent = await fs.readFile(packageJsonPath, "utf-8");
     const packageJson = JSON.parse(packageJsonContent);
 
     return {
-      name: packageJson.name || 'unknown',
-      version: packageJson.version || '0.0.0',
-      description: packageJson.description || 'unknown',
+      name: packageJson.name || "unknown",
+      version: packageJson.version || "0.0.0",
+      description: packageJson.description || "unknown",
     };
   } catch (error) {
-    console.warn('Failed to read package.json:', error);
+    console.warn("Failed to read package.json:", error);
 
     // Fallback values
     return {
-      name: 'unknown',
-      version: '0.0.0',
-      description: 'unknown',
+      name: "unknown",
+      version: "0.0.0",
+      description: "unknown",
     };
   }
 }

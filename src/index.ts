@@ -1,16 +1,16 @@
-import path from 'node:path';
-import { Command } from 'commander';
-import { downloadIcon } from './iconify.js';
-import { loadConfig } from './config.js';
-import { importModule } from './import-module.js';
-import { getPackageInfo } from './package-info.js';
-import type { TransformFunction, TransformArgs, Config } from './types.js';
+import path from "node:path";
+import { Command } from "commander";
+import { downloadIcon } from "./iconify.js";
+import { loadConfig } from "./config.js";
+import { importModule } from "./import-module.js";
+import { getPackageInfo } from "./package-info.js";
+import type { TransformFunction, TransformArgs, Config } from "./types.js";
 
 // Re-export types for easy importing by users
 export type { TransformFunction, TransformArgs, Config };
 // Re-export other useful functions
-export { downloadIcon, parseIconReference } from './iconify.js';
-export { loadConfig, defaultConfig } from './config.js';
+export { downloadIcon, parseIconReference } from "./iconify.js";
+export { loadConfig, defaultConfig } from "./config.js";
 // Create CLI program
 const program = new Command();
 
@@ -19,14 +19,14 @@ const setupProgram = async (): Promise<Command> => {
   const { name, version, description } = await getPackageInfo();
 
   return program
-    .name(name.split('/').pop() || name)
+    .name(name.split("/").pop() || name)
     .description(description)
-    .option('--init', 'Generate a config file in the current directory')
-    .option('-o, --output-dir <dir>', 'Directory to save icons')
-    .option('-c, --config <path>', 'Path to config file')
-    .option('-t, --transform <path>', 'Path to custom transform module (.js or .ts)')
-    .version(version, '-v, --version', 'Output the current version')
-    .argument('[icons...]', 'Icon references (e.g., heroicons:arrow-up-circle mdi:home)');
+    .option("--init", "Generate a config file in the current directory")
+    .option("-o, --output-dir <dir>", "Directory to save icons")
+    .option("-c, --config <path>", "Path to config file")
+    .option("-t, --transform <path>", "Path to custom transform module (.js or .ts)")
+    .version(version, "-v, --version", "Output the current version")
+    .argument("[icons...]", "Icon references (e.g., heroicons:arrow-up-circle mdi:home)");
 };
 
 // Initialize the program
@@ -45,14 +45,14 @@ initializedProgram.action(
     try {
       // Validate that icons are provided when not using --init
       if (!options.init && (!icons || icons.length === 0)) {
-        console.error('Error: At least one icon reference is required.');
+        console.error("Error: At least one icon reference is required.");
         program.help();
         return;
       }
 
       // Handle --init flag to generate a config file
       if (options.init) {
-        const fs = await import('node:fs/promises');
+        const fs = await import("node:fs/promises");
         const configFileContent = `import type { Config } from '@wkovacs64/add-icon';
 
 const config = {
@@ -62,8 +62,8 @@ const config = {
 export default config;
 `;
         try {
-          const configFilePath = path.resolve(process.cwd(), 'add-icon.config.ts');
-          await fs.writeFile(configFilePath, configFileContent, 'utf-8');
+          const configFilePath = path.resolve(process.cwd(), "add-icon.config.ts");
+          await fs.writeFile(configFilePath, configFileContent, "utf-8");
           console.log(`✓ Configuration file created at: ${configFilePath}`);
           process.exit(0);
         } catch (error: unknown) {
@@ -96,10 +96,10 @@ export default config;
             process.exit(1);
           }
 
-          if (customTransform && typeof customTransform.default === 'function') {
+          if (customTransform && typeof customTransform.default === "function") {
             config.transforms = [customTransform.default];
           } else {
-            console.error('Custom transform must export a default function');
+            console.error("Custom transform must export a default function");
             process.exit(1);
           }
         } catch (error: unknown) {
