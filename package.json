@@ -48,7 +48,7 @@
     "changeset:publish": "changeset publish"
   },
   "dependencies": {
-    "commander": "^14.0.0",
+    "commander": "^15.0.0",
     "esbuild": "~0.28.0",
     "typescript": "^5.8.3"
   },
