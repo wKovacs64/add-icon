@@ -59,7 +59,7 @@
     "@types/node": "24.13.3",
     "@wkovacs64/eslint-config": "7.14.1",
     "del-cli": "7.0.0",
-    "eslint": "9.39.4",
+    "eslint": "9.39.5",
     "npm-run-all2": "9.0.2",
     "oxfmt": "0.58.0"
   },
