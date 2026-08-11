@@ -138,5 +138,3 @@ jobs:
           publish-script: pnpm run changeset:publish
           commit-message: "chore: release"
           pr-title: "chore: release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
