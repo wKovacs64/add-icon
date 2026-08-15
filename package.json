@@ -1,28 +1,39 @@
 {
+  "name": "@wkovacs64/add-icon",
+  "version": "1.2.2",
   "description": "CLI tool to download and transform icons from Iconify",
-  "bin": {
-    "add-icon": "bin/add-icon.js"
+  "keywords": [
+    "cli",
+    "download",
+    "iconify",
+    "icons",
+    "svg"
+  ],
+  "bugs": {
+    "url": "https://github.com/wKovacs64/add-icon/issues"
   },
   "license": "MIT",
-  "engines": {
-    "node": ">=20.19.0"
-  },
-  "packageManager": "pnpm@11.21.0",
-  "main": "dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json"
+  "author": {
+    "name": "Justin Hall",
+    "email": "justin.r.hall@gmail.com"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wKovacs64/add-icon.git"
   },
+  "bin": {
+    "add-icon": "bin/add-icon.js"
+  },
   "files": [
     "dist",
     "bin"
   ],
-  "version": "1.2.2",
   "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "del-cli dist",
@@ -36,37 +47,26 @@
     "changeset:version": "changeset version && pnpm install",
     "changeset:publish": "changeset publish"
   },
-  "name": "@wkovacs64/add-icon",
-  "keywords": [
-    "cli",
-    "download",
-    "iconify",
-    "icons",
-    "svg"
-  ],
-  "bugs": {
-    "url": "https://github.com/wKovacs64/add-icon/issues"
-  },
-  "devDependencies": {
-    "oxlint": "1.77.0",
-    "@wkovacs64/oxlint-config": "0.1.0",
-    "oxlint-tsgolint": "7.0.2001",
-    "@changesets/changelog-github": "1.0.0",
-    "@wkovacs64/eslint-config": "8.0.3",
-    "del-cli": "7.0.0",
-    "@changesets/cli": "3.0.0",
-    "@types/node": "24.13.3",
-    "oxfmt": "0.63.0",
-    "@arethetypeswrong/cli": "0.18.5",
-    "npm-run-all2": "9.0.3"
-  },
   "dependencies": {
     "commander": "^15.0.0",
     "esbuild": "~0.28.0",
     "typescript": "^6.0.0"
   },
-  "author": {
-    "name": "Justin Hall",
-    "email": "justin.r.hall@gmail.com"
-  }
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@changesets/changelog-github": "1.0.0",
+    "@changesets/cli": "3.0.0",
+    "@types/node": "24.13.3",
+    "@wkovacs64/eslint-config": "8.0.3",
+    "@wkovacs64/oxlint-config": "0.1.0",
+    "del-cli": "7.0.0",
+    "npm-run-all2": "9.0.3",
+    "oxfmt": "0.63.0",
+    "oxlint": "1.77.0",
+    "oxlint-tsgolint": "7.0.2001"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "pnpm@11.21.0"
 }
