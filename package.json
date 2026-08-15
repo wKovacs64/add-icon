@@ -40,7 +40,7 @@
     "prebuild": "pnpm run --silent clean",
     "prepublishOnly": "run-p --silent lint typecheck build",
     "typecheck": "attw --pack --profile esm-only",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "oxlint",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "changeset": "changeset",
@@ -58,10 +58,12 @@
     "@changesets/cli": "3.0.0",
     "@types/node": "24.13.3",
     "@wkovacs64/eslint-config": "8.0.3",
+    "@wkovacs64/oxlint-config": "0.1.0",
     "del-cli": "7.0.0",
-    "eslint": "9.39.5",
     "npm-run-all2": "9.0.3",
-    "oxfmt": "0.63.0"
+    "oxfmt": "0.63.0",
+    "oxlint": "1.77.0",
+    "oxlint-tsgolint": "7.0.2001"
   },
   "engines": {
     "node": ">=20.19.0"
