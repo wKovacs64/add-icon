@@ -186,8 +186,8 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       '@types/node':
-        specifier: 24.13.4
-        version: 24.13.4
+        specifier: 24.13.5
+        version: 24.13.5
       '@wkovacs64/eslint-config':
         specifier: 8.0.3
         version: 8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.67.0(supports-color@7.2.0)(typescript@7.0.2))(supports-color@7.2.0)(typescript@7.0.2))(@typescript-eslint/parser@8.67.0(supports-color@7.2.0)(typescript@7.0.2))(@typescript-eslint/utils@8.67.0(supports-color@7.2.0)(typescript@7.0.2))(supports-color@7.2.0)(typescript@7.0.2)
@@ -985,8 +985,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@24.13.4':
-    resolution: {integrity: sha512-YJ7EqCstVTzIr0fMr7qul/977en+pQHrfmuKIo6Zr9i75Be21dr3MovcfvGtyvi2HAUrRerWps5sMO9I7WaxDw==}
+  '@types/node@24.13.5':
+    resolution: {integrity: sha512-TXyindR+lBr22aJIdMQzCFHPHR6cR4js838mRDCSz5hOKWZvZwsXSSiXDmjRj4iJmgl+sR9O+1mkoVBSMadNug==}
 
   '@typescript-eslint/eslint-plugin@8.67.0':
     resolution: {integrity: sha512-Un7Heoyj65NREbKAyIrFxeM143NZpExWmy1Nep4DLeQOeLlTeumPjoNKnBrU5D5moWXbPJgRa5Uwcdu0faVNGQ==}
@@ -3214,7 +3214,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@24.13.4':
+  '@types/node@24.13.5':
     dependencies:
       undici-types: 7.18.2
 
