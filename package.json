@@ -57,7 +57,7 @@
     "@changesets/changelog-github": "1.0.1",
     "@changesets/cli": "3.0.3",
     "@types/node": "24.19.2",
-    "@wkovacs64/oxlint-config": "0.3.0",
+    "@wkovacs64/oxlint-config": "0.4.0",
     "del-cli": "8.0.1",
     "npm-run-all2": "9.0.3",
     "oxfmt": "0.73.0",
