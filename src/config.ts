@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { Config } from "./types.js";
-import { importModule } from "./import-module.js";
+import { importModule, type ModuleNamespace } from "./import-module.js";
 
 /**
  * Default configuration
@@ -9,6 +9,26 @@ import { importModule } from "./import-module.js";
 export const defaultConfig = {
   outputDir: ".", // Current directory
 } as const satisfies Config;
+
+/**
+ * Checks that a config module's default export is an object. Its fields are trusted, not validated.
+ */
+function isConfig(value: unknown): value is Config {
+  return typeof value === "object" && value !== null;
+}
+
+/**
+ * Merges a config module's default export over the default config
+ * @param configModule - Imported config module
+ * @returns Configuration object
+ */
+function mergeConfigModule(configModule: ModuleNamespace): Config {
+  if (!isConfig(configModule.default)) {
+    return { ...defaultConfig };
+  }
+
+  return { ...defaultConfig, ...configModule.default };
+}
 
 /**
  * Loads configuration from file if it exists
@@ -20,8 +40,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     // If a specific config path is provided, use it
     if (configPath) {
       // Use the unified import method for both JS and TS files
-      const config = await importModule(configPath);
-      return { ...defaultConfig, ...config.default };
+      return mergeConfigModule(await importModule(configPath));
     }
 
     // Try to find a config file in the current directory, checking both JS and TS
@@ -31,10 +50,10 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     // Check for TypeScript config first
     if (existsSync(tsConfigPath)) {
       try {
-        const config = await importModule(tsConfigPath);
-        return { ...defaultConfig, ...config.default };
+        return mergeConfigModule(await importModule(tsConfigPath));
       } catch (err) {
         console.error("Error loading TypeScript config, falling back to default config:", err);
+
         return defaultConfig;
       }
     }
@@ -42,10 +61,10 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     // Then check for JavaScript config
     if (existsSync(jsConfigPath)) {
       try {
-        const config = await importModule(jsConfigPath);
-        return { ...defaultConfig, ...config.default };
+        return mergeConfigModule(await importModule(jsConfigPath));
       } catch (err) {
         console.error("Error loading JavaScript config, falling back to default config:", err);
+
         return defaultConfig;
       }
     }
@@ -54,6 +73,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
     return defaultConfig;
   } catch (error) {
     console.error("Error loading config, using default config:", error);
+
     return defaultConfig;
   }
 }

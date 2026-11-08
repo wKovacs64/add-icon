@@ -8,7 +8,7 @@ import { defaultConfig } from "./config.js";
  * @param iconReference - Reference in format 'iconSet:iconName'
  * @returns Object with iconSet and iconName
  */
-export function parseIconReference(iconReference: string): { iconSet: string; iconName: string } {
+export function parseIconReference(iconReference: string) {
   const parts = iconReference.split(":");
 
   if (parts.length !== 2 || !parts[0] || !parts[1]) {
@@ -33,6 +33,7 @@ async function fetchIconSvg(iconSet: string, iconName: string): Promise<string> 
 
   try {
     const response = await fetch(apiUrl);
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
