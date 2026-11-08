@@ -3,12 +3,20 @@ import path from "node:path";
 import * as esbuild from "esbuild";
 
 /**
+ * The part of a module namespace callers read
+ */
+export type ModuleNamespace = {
+  default?: unknown;
+};
+
+/**
  * Imports a module file (JavaScript or TypeScript) by processing it with esbuild
  * @param filePath - Path to module file (JS or TS)
  * @returns Module exports
  */
-export async function importModule(filePath: string): Promise<any> {
+export async function importModule(filePath: string): Promise<ModuleNamespace> {
   const absolutePath = path.resolve(filePath);
+
   try {
     // Read the module file content
     const code = await fs.readFile(absolutePath, "utf-8");
@@ -32,7 +40,9 @@ export async function importModule(filePath: string): Promise<any> {
     const dataUri = `data:text/javascript;base64,${base64Code}`;
 
     // Import the transformed code as a module
-    return await import(dataUri);
+    // SAFETY: import() always resolves to a module namespace object, whose `default` export is
+    // absent or any value.
+    return (await import(dataUri)) as ModuleNamespace;
   } catch (error) {
     console.error(`Error importing module ${filePath} with esbuild:`, error);
     throw error;

@@ -6,11 +6,18 @@ import { importModule } from "./import-module.js";
 import { getPackageInfo } from "./package-info.js";
 import type { TransformFunction, TransformArgs, Config } from "./types.js";
 
+function isTransformFunction(value: unknown): value is TransformFunction {
+  return typeof value === "function";
+}
+
 // Re-export types for easy importing by users
 export type { TransformFunction, TransformArgs, Config };
+
 // Re-export other useful functions
 export { downloadIcon, parseIconReference } from "./iconify.js";
+
 export { loadConfig, defaultConfig } from "./config.js";
+
 // Create CLI program
 const program = new Command();
 
@@ -44,15 +51,17 @@ initializedProgram.action(
   ) => {
     try {
       // Validate that icons are provided when not using --init
-      if (!options.init && (!icons || icons.length === 0)) {
+      if (options.init !== true && icons.length === 0) {
         console.error("Error: At least one icon reference is required.");
         program.help();
+
         return;
       }
 
       // Handle --init flag to generate a config file
-      if (options.init) {
+      if (options.init === true) {
         const fs = await import("node:fs/promises");
+
         const configFileContent = `import type { Config } from '@wkovacs64/add-icon';
 
 const config = {
@@ -61,6 +70,7 @@ const config = {
 
 export default config;
 `;
+
         try {
           const configFilePath = path.resolve(process.cwd(), "add-icon.config.ts");
           await fs.writeFile(configFilePath, configFileContent, "utf-8");
@@ -96,7 +106,7 @@ export default config;
             process.exit(1);
           }
 
-          if (customTransform && typeof customTransform.default === "function") {
+          if (isTransformFunction(customTransform.default)) {
             config.transforms = [customTransform.default];
           } else {
             console.error("Custom transform must export a default function");
@@ -111,8 +121,10 @@ export default config;
 
       // Download all icons
       const results = [];
+
       for (const icon of icons) {
         console.log(`Downloading icon: ${icon}...`);
+
         try {
           const savedPath = await downloadIcon(icon, config);
           console.log(`✓ Icon saved to: ${savedPath}`);
