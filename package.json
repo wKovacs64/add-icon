@@ -61,7 +61,7 @@
     "del-cli": "8.0.1",
     "npm-run-all2": "9.0.4",
     "oxfmt": "0.78.0",
-    "oxlint": "1.92.0",
+    "oxlint": "1.93.0",
     "oxlint-tsgolint": "7.0.2006"
   },
   "engines": {
